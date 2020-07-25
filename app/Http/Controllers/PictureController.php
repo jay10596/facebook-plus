@@ -20,7 +20,7 @@ class PictureController extends Controller
         ]);
 
         $postData = request()->validate([
-            'post_id' => 'required',
+            'post_id' => '',
             'body' => 'required'
         ]);
 

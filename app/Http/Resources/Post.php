@@ -20,14 +20,14 @@ class Post extends JsonResource
             'user_id' => $this->user_id,
             'created_at' => $this->created_at->diffForHumans(),
 
+            'comments' => new CommentCollection($this->comments),
+
+            'likes' => new LikeCollection($this->likes),
+
             'pictures' => new PictureCollection($this->pictures),
 
             // PostResource inside PostResource
             'shared_post' => new PostResource($sharedPost),
-
-            'likes' => new LikeCollection($this->likes),
-
-            'comments' => new CommentCollection($this->comments),
 
             'posted_by' => new UserResource($this->user),
 
