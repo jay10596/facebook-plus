@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center items-center">
+    <div class="flex relative justify-center items-center">
         <div class="flex-col w-full h-max mx-12 my-4 bg-white shadow">
             <div class="flex justify-between items-center m-4">
                 <div class="flex">
@@ -14,71 +14,13 @@
                 </div>
 
                 <div>
-                    <button @click="createMode = ! createMode" ref="commentGif" class="dz-clickable w-96 h-8 pr-4 bg-blue-700 text-white text-sm font-semibold focus:outline-none">
+                    <button ref="itemImage" class="w-96 h-8 pr-4 bg-blue-700 text-white text-sm font-semibold focus:outline-none">
                         <i class="fas fa-plus text-xs font-light"></i> Sell Item
                     </button>
                 </div>
             </div>
 
-            <div v-if="createMode">
-                <form class="w-full max-w-sm my-4">
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">Title</label>
-                        </div>
-
-                        <div class="md:w-2/3">
-                            <input v-model="itemForm.title" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" placeholder="Enter the title">
-                        </div>
-                    </div>
-
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">Description</label>
-                        </div>
-
-                        <div class="md:w-2/3">
-                            <input v-model="itemForm.description" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" placeholder="Write description">
-                        </div>
-                    </div>
-
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">Price</label>
-                        </div>
-
-                        <div class="md:w-2/3">
-                            <input v-model="itemForm.price" class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" placeholder="$0.0">
-                        </div>
-                    </div>
-
-                    <div class="md:flex md:items-center mb-6">
-                        <div class="md:w-1/3">
-                            <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="inline-username">Category</label>
-                        </div>
-
-                        <div class="inline-block relative w-64">
-                            <select v-model="itemForm.category_id" class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
-                                <option v-for="category in categories" :value="category.id">{{category.name}}</option>
-                            </select>
-
-                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <i class="fas fa-caret-down"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="md:flex md:items-center">
-                        <div class="md:w-1/3"></div>
-
-                        <div class="md:w-2/3">
-                            <button @click="dispatchAddItem(itemForm), itemForm = '', createMode = false" class="shadow bg-blue-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button">Sell it!</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div v-else class="mx-4 my-4 text-xs">
+            <div v-if="!sellMode" class="mx-4 my-4 text-xs">
                 <div class="inline-block relative mr-4">
                     <select class="block appearance-none w-max bg-gray-200 font-bold text-gray-700 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none">
                         <option>Location</option>
@@ -103,6 +45,63 @@
 
                 <button class="font-bold text-blue-800">Reset</button>
             </div>
+
+            <div v-else class="w-full px-4 py-4">
+                <div class="flex-col mb-6">
+                    <label class="text-gray-600 font-semibold text-xs">Title</label>
+
+                    <input v-model="itemForm.title" class="appearance-none border-b border-gray-400 w-full text-gray-800 text-sm focus:outline-none focus:bg-white focus:border-blue-500" placeholder="Add a title">
+                </div>
+
+                <div class="flex-col justify-start items-center mb-6">
+                    <label class="text-gray-600 font-semibold text-xs">Description</label>
+
+                    <input v-model="itemForm.description" class="appearance-none border-b border-gray-400 w-full text-gray-800 text-sm focus:outline-none focus:bg-white focus:border-blue-500" placeholder="Add a description of the item">
+                </div>
+
+                <div class="flex-col justify-start items-center mb-6">
+                    <label class="text-gray-600 font-semibold text-xs">Price</label>
+
+                    <input v-model="itemForm.price" class="appearance-none border-b border-gray-400 w-full text-gray-800 text-sm focus:outline-none focus:bg-white focus:border-blue-500" placeholder="$0.0">
+                </div>
+
+                <div class="flex-col justify-start items-center mb-6">
+                    <label class="text-gray-600 font-semibold text-xs mr-4">Category</label>
+
+                    <div class="inline-block relative w-64">
+                        <select v-model="itemForm.category_id" class="block appearance-none w-full bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline">
+                            <option>Please select one</option>
+                            <option v-for="category in categories" :value="category.id">{{category.name}}</option>
+                        </select>
+
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <i class="fas fa-caret-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end">
+                    <button @click="addItem(itemForm)" class="px-2 py-1 mr-2 bg-blue-700 text-white text-sm font-semibold shadow-md focus:outline-none" type="button">Upload</button>
+
+                    <button @click="cancelItem" class="px-2 py-1 mr-2 bg-gray-200 text-gray-600 text-sm font-semibold shadow-md border border-gray-400 focus:outline-none" type="button">Cancel</button>
+                </div>
+            </div>
+
+            <div class="dropzone-previews flex">
+                <div id="dz-template" class="hidden">
+                    <div class="dz-preview dz-file-preview mt-4">
+                        <div class="dz-details mr-1">
+                            <img data-dz-thumbnail class="w-32 h-32" alt="">
+
+                            <button data-dz-remove class="mt-2 ml-6 text-sm focus:outline-none"> <i class="fas fa-minus-circle text-red-500"></i> Remove</button>
+                        </div>
+
+                        <div class="dz-progress">
+                            <span class="dz-upload" data-dz-upload></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -120,15 +119,15 @@
                     title: '',
                     description: '',
                     price: '',
-                    category_id: '',
+                    category_id: 'Please select one' //This needs to be exactly the same as the image first option tag with without loop
                 },
-                createMode: false,
+                sellMode: false,
                 dropzone: null
             }
         },
 
         mounted() {
-            this.dropzone = new Dropzone(this.$refs.commentGif, this.settings);
+            this.dropzone = new Dropzone(this.$refs.itemImage, this.settings);
         },
 
         computed: {
@@ -141,10 +140,9 @@
                     paramName: 'image', //field name is image
                     url: '/api/upload-images',
                     acceptedFiles: 'image/*',
-                    clickable: '.dz-clickable', //<i> will not work as it is not a button. To make sure all the inner elements of button are clickable.
                     autoProcessQueue: false, //When the image is uploaded, it sends it right away which will give the error becasue we do not have the body in params.
-                    //previewsContainer: '.dropzone-previews',
-                    //previewTemplate: document.querySelector('#dz-template').innerHTML,
+                    previewsContainer: ".dropzone-previews",
+                    previewTemplate: document.querySelector('#dz-template').innerHTML,
                     maxFiles: 5,
                     parallelUploads: 5,
                     uploadMultiple: true,
@@ -166,9 +164,6 @@
                     success: (e, res) => {
                         this.dropzone.removeAllFiles()
 
-                        //this.$store.commit('setPostBody', '')
-
-                        //this.$store.commit('pushPost', res) For multiple images post, it will commit the response multiple times.
                         this.$store.dispatch('fetchAllItems')
                     },
                     maxfilesexceeded: file => {
@@ -181,13 +176,31 @@
         },
 
         created() {
-            this.$store.dispatch('fetchAllCategories');
+            this.$store.dispatch('fetchAllCategories')
         },
 
         methods: {
-            dispatchAddItem() {
+            addItem() {
                 this.dropzone.processQueue()
+                this.itemForm = ''
+                this.createMode = false
             },
+
+            cancelItem() {
+                this.dropzone.removeAllFiles()
+                this.itemForm = ''
+                this.createMode = false
+            },
+        },
+
+        watch: {
+            'dropzone.files.length'(newValue, oldValue) {
+                if(newValue > 0) {
+                    this.sellMode = true
+                } else {
+                    this.sellMode = false
+                }
+            }
         }
     }
 </script>

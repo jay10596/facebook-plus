@@ -47,10 +47,6 @@
                 </div>
             </div>
         </div>
-
-        <button @click="gifMode = ! gifMode" class="px-4 mb-4 text-xs focus:outline-none"><i class="fas fa-camera"></i></button>
-
-<!--        <div v-if="favouriteMode" class="bg-black opacity-0 absolute z-0 left-0 top-0 right-0 bottom-0" @click="favouriteMode = false"></div>-->
     </div>
 </template>
 

@@ -28,7 +28,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/confirm-request', 'FriendController@confirmRequest');
     Route::post('/delete-request', 'FriendController@deleteRequest');
 
-    //LIKE, EMOJI, BOOKMARK
+    //LIKE, FAVOURITE, BOOKMARK
     Route::post('/posts/{post}/like-dislike', 'LikeController@likeDislike');
     Route::post('/posts/{post}/comments/{comment}/favourite-unfavourite', 'FavouriteController@favouriteUnfavourite');
     Route::post('/items/{item}/bookmark-unbookmark', 'BookmarkController@bookmarkUnbookmark');

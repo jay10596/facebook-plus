@@ -19,9 +19,9 @@
 </template>
 
 <script>
+    import {mapGetters} from "vuex";
     import CreateItem from "./CreateItem";
     import ItemCard from "../Extra/ItemCard";
-    import {mapGetters} from "vuex";
 
     export default {
         name: "ShowItems",

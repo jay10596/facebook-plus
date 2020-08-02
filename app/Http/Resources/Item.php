@@ -21,11 +21,11 @@ class Item extends JsonResource
             'user_id' => $this->user_id,
             'created_at' => $this->created_at->diffForHumans(),
 
-            'images' => new ImageCollection($this->images),
+            //'replies' => new CommentCollection($this->comments),
 
             'bookmarks' => new BookmarkCollection($this->bookmarks),
 
-            //'replies' => new CommentCollection($this->comments),
+            'images' => new ImageCollection($this->images),
 
             'category' =>new CategoryResource($this->category),
 

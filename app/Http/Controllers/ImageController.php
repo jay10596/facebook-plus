@@ -14,7 +14,7 @@ class ImageController extends Controller
     public function uploadImage()
     {
         $imageData = request()->validate([
-            'image' => '',
+            'image' => 'required',
         ]);
 
         $itemData = request()->validate([

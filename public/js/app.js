@@ -6935,10 +6935,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CommentCard",
   props: ['comment', 'comment_index', 'post_index'],
@@ -7633,7 +7629,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -7644,14 +7639,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         title: '',
         description: '',
         price: '',
-        category_id: ''
+        category_id: 'Please select one' //This needs to be exactly the same as the image first option tag with without loop
+
       },
-      createMode: false,
+      sellMode: false,
       dropzone: null
     };
   },
   mounted: function mounted() {
-    this.dropzone = new dropzone__WEBPACK_IMPORTED_MODULE_0___default.a(this.$refs.commentGif, this.settings);
+    this.dropzone = new dropzone__WEBPACK_IMPORTED_MODULE_0___default.a(this.$refs.itemImage, this.settings);
   },
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])({
     categories: 'categories'
@@ -7664,12 +7660,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         //field name is image
         url: '/api/upload-images',
         acceptedFiles: 'image/*',
-        clickable: '.dz-clickable',
-        //<i> will not work as it is not a button. To make sure all the inner elements of button are clickable.
         autoProcessQueue: false,
         //When the image is uploaded, it sends it right away which will give the error becasue we do not have the body in params.
-        //previewsContainer: '.dropzone-previews',
-        //previewTemplate: document.querySelector('#dz-template').innerHTML,
+        previewsContainer: ".dropzone-previews",
+        previewTemplate: document.querySelector('#dz-template').innerHTML,
         maxFiles: 5,
         parallelUploads: 5,
         uploadMultiple: true,
@@ -7689,9 +7683,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           itemForm.append('category_id', _this.itemForm.category_id);
         },
         success: function success(e, res) {
-          _this.dropzone.removeAllFiles(); //this.$store.commit('setPostBody', '')
-          //this.$store.commit('pushPost', res) For multiple images post, it will commit the response multiple times.
-
+          _this.dropzone.removeAllFiles();
 
           _this.$store.dispatch('fetchAllItems');
         },
@@ -7707,8 +7699,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.$store.dispatch('fetchAllCategories');
   },
   methods: {
-    dispatchAddItem: function dispatchAddItem() {
+    addItem: function addItem() {
       this.dropzone.processQueue();
+      this.itemForm = '';
+      this.createMode = false;
+    },
+    cancelItem: function cancelItem() {
+      this.dropzone.removeAllFiles();
+      this.itemForm = '';
+      this.createMode = false;
+    }
+  },
+  watch: {
+    'dropzone.files.length': function dropzoneFilesLength(newValue, oldValue) {
+      if (newValue > 0) {
+        this.sellMode = true;
+      } else {
+        this.sellMode = false;
+      }
     }
   }
 });
@@ -7763,9 +7771,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _CreateItem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateItem */ "./resources/js/components/Item/CreateItem.vue");
-/* harmony import */ var _Extra_ItemCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Extra/ItemCard */ "./resources/js/components/Extra/ItemCard.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _CreateItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateItem */ "./resources/js/components/Item/CreateItem.vue");
+/* harmony import */ var _Extra_ItemCard__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Extra/ItemCard */ "./resources/js/components/Extra/ItemCard.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -7798,10 +7806,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ShowItems",
   components: {
-    CreateItem: _CreateItem__WEBPACK_IMPORTED_MODULE_0__["default"],
-    ItemCard: _Extra_ItemCard__WEBPACK_IMPORTED_MODULE_1__["default"]
+    CreateItem: _CreateItem__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ItemCard: _Extra_ItemCard__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])({
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     items: 'items',
     status: 'itemStatus'
   })),
@@ -31229,9 +31237,9 @@ var render = function() {
               },
               [
                 _vm._v(
-                  "\n                        " +
+                  "\n                    " +
                     _vm._s(_vm.comment.commented_by.name) +
-                    "\n                    "
+                    "\n                "
                 )
               ]
             ),
@@ -31485,20 +31493,7 @@ var render = function() {
           ])
         ])
       ])
-    ]),
-    _vm._v(" "),
-    _c(
-      "button",
-      {
-        staticClass: "px-4 mb-4 text-xs focus:outline-none",
-        on: {
-          click: function($event) {
-            _vm.gifMode = !_vm.gifMode
-          }
-        }
-      },
-      [_c("i", { staticClass: "fas fa-camera" })]
-    )
+    ])
   ])
 }
 var staticRenderFns = []
@@ -32503,71 +32498,87 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "flex justify-center items-center" }, [
-    _c(
-      "div",
-      { staticClass: "flex-col w-full h-max mx-12 my-4 bg-white shadow" },
-      [
-        _c("div", { staticClass: "flex justify-between items-center m-4" }, [
-          _vm._m(0),
+  return _c(
+    "div",
+    { staticClass: "flex relative justify-center items-center" },
+    [
+      _c(
+        "div",
+        { staticClass: "flex-col w-full h-max mx-12 my-4 bg-white shadow" },
+        [
+          _c("div", { staticClass: "flex justify-between items-center m-4" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", [
+              _c(
+                "button",
+                {
+                  ref: "itemImage",
+                  staticClass:
+                    "w-96 h-8 pr-4 bg-blue-700 text-white text-sm font-semibold focus:outline-none"
+                },
+                [
+                  _c("i", { staticClass: "fas fa-plus text-xs font-light" }),
+                  _vm._v(" Sell Item\n                ")
+                ]
+              )
+            ])
+          ]),
           _vm._v(" "),
-          _c("div", [
-            _c(
-              "button",
-              {
-                ref: "commentGif",
-                staticClass:
-                  "dz-clickable w-96 h-8 pr-4 bg-blue-700 text-white text-sm font-semibold focus:outline-none",
-                on: {
-                  click: function($event) {
-                    _vm.createMode = !_vm.createMode
-                  }
-                }
-              },
-              [
-                _c("i", { staticClass: "fas fa-plus text-xs font-light" }),
-                _vm._v(" Sell Item\n                ")
-              ]
-            )
-          ])
-        ]),
-        _vm._v(" "),
-        _vm.createMode
-          ? _c("div", [
-              _c("form", { staticClass: "w-full max-w-sm my-4" }, [
-                _c("div", { staticClass: "md:flex md:items-center mb-6" }, [
-                  _vm._m(1),
+          !_vm.sellMode
+            ? _c("div", { staticClass: "mx-4 my-4 text-xs" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _vm._m(2),
+                _vm._v(" "),
+                _vm._m(3),
+                _vm._v(" "),
+                _c("button", { staticClass: "font-bold text-blue-800" }, [
+                  _vm._v("Reset")
+                ])
+              ])
+            : _c("div", { staticClass: "w-full px-4 py-4" }, [
+                _c("div", { staticClass: "flex-col mb-6" }, [
+                  _c(
+                    "label",
+                    { staticClass: "text-gray-600 font-semibold text-xs" },
+                    [_vm._v("Title")]
+                  ),
                   _vm._v(" "),
-                  _c("div", { staticClass: "md:w-2/3" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.itemForm.title,
-                          expression: "itemForm.title"
-                        }
-                      ],
-                      staticClass:
-                        "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500",
-                      attrs: { placeholder: "Enter the title" },
-                      domProps: { value: _vm.itemForm.title },
-                      on: {
-                        input: function($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.$set(_vm.itemForm, "title", $event.target.value)
-                        }
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.itemForm.title,
+                        expression: "itemForm.title"
                       }
-                    })
-                  ])
+                    ],
+                    staticClass:
+                      "appearance-none border-b border-gray-400 w-full text-gray-800 text-sm focus:outline-none focus:bg-white focus:border-blue-500",
+                    attrs: { placeholder: "Add a title" },
+                    domProps: { value: _vm.itemForm.title },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.itemForm, "title", $event.target.value)
+                      }
+                    }
+                  })
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "md:flex md:items-center mb-6" }, [
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "md:w-2/3" }, [
+                _c(
+                  "div",
+                  { staticClass: "flex-col justify-start items-center mb-6" },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "text-gray-600 font-semibold text-xs" },
+                      [_vm._v("Description")]
+                    ),
+                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -32578,8 +32589,8 @@ var render = function() {
                         }
                       ],
                       staticClass:
-                        "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500",
-                      attrs: { placeholder: "Write description" },
+                        "appearance-none border-b border-gray-400 w-full text-gray-800 text-sm focus:outline-none focus:bg-white focus:border-blue-500",
+                      attrs: { placeholder: "Add a description of the item" },
                       domProps: { value: _vm.itemForm.description },
                       on: {
                         input: function($event) {
@@ -32594,13 +32605,19 @@ var render = function() {
                         }
                       }
                     })
-                  ])
-                ]),
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "md:flex md:items-center mb-6" }, [
-                  _vm._m(3),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "md:w-2/3" }, [
+                _c(
+                  "div",
+                  { staticClass: "flex-col justify-start items-center mb-6" },
+                  [
+                    _c(
+                      "label",
+                      { staticClass: "text-gray-600 font-semibold text-xs" },
+                      [_vm._v("Price")]
+                    ),
+                    _vm._v(" "),
                     _c("input", {
                       directives: [
                         {
@@ -32611,7 +32628,7 @@ var render = function() {
                         }
                       ],
                       staticClass:
-                        "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500",
+                        "appearance-none border-b border-gray-400 w-full text-gray-800 text-sm focus:outline-none focus:bg-white focus:border-blue-500",
                       attrs: { placeholder: "$0.0" },
                       domProps: { value: _vm.itemForm.price },
                       on: {
@@ -32623,98 +32640,108 @@ var render = function() {
                         }
                       }
                     })
-                  ])
-                ]),
+                  ]
+                ),
                 _vm._v(" "),
-                _c("div", { staticClass: "md:flex md:items-center mb-6" }, [
-                  _vm._m(4),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "inline-block relative w-64" }, [
+                _c(
+                  "div",
+                  { staticClass: "flex-col justify-start items-center mb-6" },
+                  [
                     _c(
-                      "select",
+                      "label",
                       {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.itemForm.category_id,
-                            expression: "itemForm.category_id"
-                          }
-                        ],
-                        staticClass:
-                          "block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline",
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.$set(
-                              _vm.itemForm,
-                              "category_id",
-                              $event.target.multiple
-                                ? $$selectedVal
-                                : $$selectedVal[0]
-                            )
-                          }
-                        }
+                        staticClass: "text-gray-600 font-semibold text-xs mr-4"
                       },
-                      _vm._l(_vm.categories, function(category) {
-                        return _c(
-                          "option",
-                          { domProps: { value: category.id } },
-                          [_vm._v(_vm._s(category.name))]
-                        )
-                      }),
-                      0
+                      [_vm._v("Category")]
                     ),
                     _vm._v(" "),
-                    _vm._m(5)
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "md:flex md:items-center" }, [
-                  _c("div", { staticClass: "md:w-1/3" }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "md:w-2/3" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass:
-                          "shadow bg-blue-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded",
-                        attrs: { type: "button" },
-                        on: {
-                          click: function($event) {
-                            _vm.dispatchAddItem(_vm.itemForm),
-                              (_vm.itemForm = ""),
-                              (_vm.createMode = false)
+                    _c("div", { staticClass: "inline-block relative w-64" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.itemForm.category_id,
+                              expression: "itemForm.category_id"
+                            }
+                          ],
+                          staticClass:
+                            "block appearance-none w-full bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline",
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.itemForm,
+                                "category_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
                           }
+                        },
+                        [
+                          _c("option", [_vm._v("Please select one")]),
+                          _vm._v(" "),
+                          _vm._l(_vm.categories, function(category) {
+                            return _c(
+                              "option",
+                              { domProps: { value: category.id } },
+                              [_vm._v(_vm._s(category.name))]
+                            )
+                          })
+                        ],
+                        2
+                      ),
+                      _vm._v(" "),
+                      _vm._m(4)
+                    ])
+                  ]
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex justify-end" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "px-2 py-1 mr-2 bg-blue-700 text-white text-sm font-semibold shadow-md focus:outline-none",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.addItem(_vm.itemForm)
                         }
-                      },
-                      [_vm._v("Sell it!")]
-                    )
-                  ])
+                      }
+                    },
+                    [_vm._v("Upload")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "px-2 py-1 mr-2 bg-gray-200 text-gray-600 text-sm font-semibold shadow-md border border-gray-400 focus:outline-none",
+                      attrs: { type: "button" },
+                      on: { click: _vm.cancelItem }
+                    },
+                    [_vm._v("Cancel")]
+                  )
                 ])
-              ])
-            ])
-          : _c("div", { staticClass: "mx-4 my-4 text-xs" }, [
-              _vm._m(6),
-              _vm._v(" "),
-              _vm._m(7),
-              _vm._v(" "),
-              _vm._m(8),
-              _vm._v(" "),
-              _c("button", { staticClass: "font-bold text-blue-800" }, [
-                _vm._v("Reset")
-              ])
-            ])
-      ]
-    )
-  ])
+              ]),
+          _vm._v(" "),
+          _vm._m(5)
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = [
   function() {
@@ -32749,80 +32776,6 @@ var staticRenderFns = [
         [_c("i", { staticClass: "fas fa-search" })]
       )
     ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "md:w-1/3" }, [
-      _c(
-        "label",
-        {
-          staticClass:
-            "block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-        },
-        [_vm._v("Title")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "md:w-1/3" }, [
-      _c(
-        "label",
-        {
-          staticClass:
-            "block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-        },
-        [_vm._v("Description")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "md:w-1/3" }, [
-      _c(
-        "label",
-        {
-          staticClass:
-            "block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4"
-        },
-        [_vm._v("Price")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "md:w-1/3" }, [
-      _c(
-        "label",
-        {
-          staticClass:
-            "block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4",
-          attrs: { for: "inline-username" }
-        },
-        [_vm._v("Category")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass:
-          "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
-      },
-      [_c("i", { staticClass: "fas fa-caret-down" })]
-    )
   },
   function() {
     var _vm = this
@@ -32884,6 +32837,55 @@ var staticRenderFns = [
       },
       [_c("i", { staticClass: "fas fa-bolt mr-3" }), _vm._v("Free")]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+      },
+      [_c("i", { staticClass: "fas fa-caret-down" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "dropzone-previews flex" }, [
+      _c("div", { staticClass: "hidden", attrs: { id: "dz-template" } }, [
+        _c("div", { staticClass: "dz-preview dz-file-preview mt-4" }, [
+          _c("div", { staticClass: "dz-details mr-1" }, [
+            _c("img", {
+              staticClass: "w-32 h-32",
+              attrs: { "data-dz-thumbnail": "", alt: "" }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "mt-2 ml-6 text-sm focus:outline-none",
+                attrs: { "data-dz-remove": "" }
+              },
+              [
+                _c("i", { staticClass: "fas fa-minus-circle text-red-500" }),
+                _vm._v(" Remove")
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "dz-progress" }, [
+            _c("span", {
+              staticClass: "dz-upload",
+              attrs: { "data-dz-upload": "" }
+            })
+          ])
+        ])
+      ])
+    ])
   }
 ]
 render._withStripped = true

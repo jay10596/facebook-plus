@@ -15,7 +15,7 @@ class GifController extends Controller
     public function uploadGif()
     {
         $data = request()->validate([
-            'body' => 'required',
+            'body' => '',
             'gif' => 'required',
             'post_id' => 'required',
             // Passing Height and Width from the Dropzone params.

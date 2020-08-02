@@ -11,7 +11,6 @@ class Image extends JsonResource
         return [
             'id' => $this->id,
             'path' => $this->path,
-            'type' => $this->type,
         ];
     }
 }
