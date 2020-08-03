@@ -5,6 +5,7 @@ use Illuminate\Database\Seeder;
 use App\User;
 use App\Post;
 use App\Comment;
+use App\Favourite;
 use App\Like;
 use App\Item;
 use App\Category;
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
         factory(Post::class, 10)->create();
         factory(Like::class, 5)->create();
         factory(Comment::class, 10)->create();
+        factory(Favourite::class, 5)->create();
         factory(Category::class, 5)->create();
         factory(Item::class, 10)->create();
         factory(Bookmark::class, 5)->create();

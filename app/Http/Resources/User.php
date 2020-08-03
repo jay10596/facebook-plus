@@ -17,6 +17,13 @@ class User extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'city' => $this->city,
+            'gender' => $this->gender,
+            //'birthday' => $this->birthday,
+            'interest' => $this->interest,
+            'about' => $this->about,
+
+
             'friendship' => new FriendResource(Friend::friendship($this->id)),
 
             'cover_image' => new AvatarResource($this->coverImage),

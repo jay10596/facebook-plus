@@ -2,11 +2,11 @@
     <div v-if="user">
         <div class="relative">
             <div class="w-100 h-64 overflow-hidden z-10">
-                <UploadAvatar :newImage="user.cover_image" imageClass="object-cover w-full" imageAlt="Cover Image" imageWidth="1500" imageHeight="500" imageType="cover"/>
+                <UploadAvatar :newAvatar="user.cover_image" avatarClass="object-cover w-full" avatarAlt="Cover Image" avatarWidth="1500" avatarHeight="500" avatarType="cover"/>
             </div>
 
             <div class="absolute flex items-center bottom-0 left-0 -mb-8 z-20 mx-4">
-                <UploadAvatar :newImage="user.profile_image" imageClass="w-32 h-32 object-cover rounded-full shadow-lg border-4 border-gray-200" imageAlt="Profile Image" imageWidth="750" imageHeight="750" imageType="profile"/>
+                <UploadAvatar :newAvatar="user.profile_image" avatarClass="w-32 h-32 object-cover rounded-full shadow-lg border-4 border-gray-200" avatarAlt="Profile Image" avatarWidth="750" avatarHeight="750" avatarType="profile" />
 
                 <p class="text-2xl text-gray-100 ml-3 shadow-2xl">{{user.name}}</p>
             </div>

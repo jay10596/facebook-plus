@@ -10,7 +10,7 @@ use App\Post;
 
 /*
 	In blogSPA we didn't add post_id and used $post as RMB because we used hasMany relationship.
-	It won't work here because we are using mant2many relationship in this project.
+	It won't work here because we are using many2many relationship in this project.
 */
 $factory->define(Like::class, function (Faker $faker) {
     return [

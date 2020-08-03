@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img :class="imageClass" :src="'/storage/' + imageObject.path" :alt="imageAlt" ref="userImage">
+        <img :class="avatarClass" :src="'/storage/' + avatarObject.path" :alt="avatarAlt" ref="userAvatar">
     </div>
 </template>
 
@@ -9,20 +9,19 @@
     import { mapGetters } from 'vuex';
 
     export default {
-        name: "UploadableImage",
+        name: "UploadAvatar",
 
-        props: ['newImage', 'imageClass', 'imageAlt', 'imageWidth', 'imageHeight', 'imageType'],
+        props: ['newAvatar', 'avatarClass', 'avatarAlt', 'avatarWidth', 'avatarHeight', 'avatarType'],
 
         data() {
             return {
-                dropzone: null,
-                uploadedImage: null
+                dropzone: null
             }
         },
 
         mounted() {
             if(this.authUser.id == this.$route.params.userId) {
-                this.dropzone = new Dropzone(this.$refs.userImage, this.settings);
+                this.dropzone = new Dropzone(this.$refs.userAvatar, this.settings);
             }
         },
 
@@ -37,9 +36,9 @@
                     url: '/api/upload-avatars',
                     acceptedFiles: 'image/*',
                     params: {
-                        'width': this.imageWidth,
-                        'height': this.imageHeight,
-                        'type' : this.imageType
+                        'width': this.avatarWidth,
+                        'height': this.avatarHeight,
+                        'type' : this.avatarType
                     },
                     headers: {
                         //'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content,
@@ -47,7 +46,6 @@
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     },
                     success: (e, res) => {
-                        //alert('uploaded!');
                         /*  One Way
 
                             this.cover_image = res will not work because we can not mutate the props.
@@ -63,8 +61,8 @@
             },
 
             //Tt is not required if we are dispatching events because as we are not changing uploadedImage, it will call this.newImage anyway. Just change it on the :scr at the top.
-            imageObject() {
-                return this.uploadedImage || this.newImage
+            avatarObject() {
+                return null || this.newAvatar
             }
         }
 
