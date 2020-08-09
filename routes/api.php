@@ -41,4 +41,9 @@ Route::middleware('auth:api')->group(function () {
 
     //SHARE
     Route::post('/share-post', 'ShareController@sharePost');
+
+    //FEATURES
+    Route::post('/filter-birthdays', 'FeatureController@filterBirthdays');
+    Route::post('/wish-birthday', 'FeatureController@wishBirthday');
+
 });

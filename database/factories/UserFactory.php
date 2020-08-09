@@ -15,7 +15,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'city' => $faker->city,
         'gender' => $gender,
-        //'birthday' =>
+        'birthday' => $faker->dateTimeBetween('1990-01-01', '2012-12-31')->format('d-m-Y'),
         'interest' => $faker->randomElement(['male', 'female', 'both']),
         'about' => $faker->text,
         'email_verified_at' => now(),

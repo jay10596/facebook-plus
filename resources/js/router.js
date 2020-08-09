@@ -7,6 +7,7 @@ import ShowUser from "./components/User/ShowUser";
 import EditUser from "./components/User/EditUser";
 import ShowItems from "./components/Item/ShowItems";
 import ShowItem from "./components/Item/ShowItem";
+import ShowBirthdays from "./components/Feature/ShowBirthdays";
 
 let homeTitle = 'Sign Up';
 
@@ -31,6 +32,8 @@ export default new VueRouter({
         { path: '/category3items', component: ShowItems, meta:{title: 'Categories'} },
         { path: '/category4items', component: ShowItems, meta:{title: 'Categories'} },
         { path: '/category5items', component: ShowItems, meta:{title: 'Categories'} },
+
+        { path: '/birthdays', component: ShowBirthdays, meta:{title: 'Birthday'} },
     ],
     mode: 'history',
     hash: false

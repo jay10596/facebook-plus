@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center justify-center py-4">
         <p v-if="status == 'loading'">Loading Posts...</p>
 
-        <PostCard v-for="(post, index) in posts" :key="index" :post="post"/>
+        <PostCard v-for="(post, index) in posts" :key="index" :post="post" />
     </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-2/3 p-4 bg-white shadow rounded">
+    <div class="w-5/6 p-4 bg-white shadow rounded">
         <div class="flex justify-between items-center">
             <img class="w-8 h-8 object-cover rounded-full" :src="'/storage/' + authUser.profile_image.path" alt="Profile Image">
 

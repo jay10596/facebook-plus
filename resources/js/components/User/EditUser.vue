@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="w-full bg-white border-b-2 border-gray-400 shadow-sm">
-            <p class="p-6 text-xl font-semibold text-gray-800">{{authUser.name}} <i class="fas fa-caret-right mx-2 text-gray-500"></i> Edit Profile</p>
+            <p class="p-6 text-xl font-semibold text-gray-800">{{originalName}} <i class="fas fa-caret-right mx-2 text-gray-500"></i> Edit Profile</p>
         </div>
 
         <div class="p-4">
@@ -56,9 +56,8 @@
                         <div class="flex">
                             <div class="flex-col justify-start items-center mr-4">
                                 <div class="inline-block relative">
-                                    <select v-model="authUser.name" class="block w-16 h-6 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline">
-                                        <option>Male</option>
-                                        <option>Female</option>
+                                    <select v-model="authUser.birthday.day" class="block w-12 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline">
+                                        <option v-for="i in 31">{{i}}</option>
                                     </select>
 
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -69,9 +68,8 @@
 
                             <div class="flex-col justify-start items-center mr-4">
                                 <div class="inline-block relative">
-                                    <select v-model="authUser.name" class="block w-12 h-6 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline">
-                                        <option>Male</option>
-                                        <option>Female</option>
+                                    <select v-model="authUser.birthday.month" class="block w-16 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline">
+                                        <option v-for="(month, index) in months" :value="index + 1">{{month}}</option>
                                     </select>
 
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -82,9 +80,8 @@
 
                             <div class="flex-col justify-start items-center mr-4">
                                 <div class="inline-block relative">
-                                    <select v-model="authUser.name" class="block w-16 h-6 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline">
-                                        <option>Male</option>
-                                        <option>Female</option>
+                                    <select v-model="authUser.birthday.year" class="block w-16 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline">
+                                        <option v-for="i in 2020" v-if="i > 1995">{{i}}</option>
                                     </select>
 
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -130,9 +127,9 @@
                 </div>
 
                 <div class="flex justify-end py-6">
-                    <button class="px-2 py-1 mr-2 bg-blue-700 text-white text-sm font-semibold shadow-md focus:outline-none" type="button">Save</button>
+                    <button @click="dispatchUpdateUser(authUser)" class="px-2 py-1 mr-2 bg-blue-700 text-white text-sm font-semibold shadow-md focus:outline-none" type="button">Save</button>
 
-                    <button class="px-2 py-1 mr-2 bg-gray-200 text-gray-600 text-sm font-semibold shadow-md border border-gray-400 focus:outline-none" type="button">Cancel</button>
+                    <button @click="$router.push('/')" class="px-2 py-1 mr-2 bg-gray-200 text-gray-600 text-sm font-semibold shadow-md border border-gray-400 focus:outline-none" type="button">Cancel</button>
                 </div>
             </div>
         </div>
@@ -142,6 +139,7 @@
 <script>
     import {mapGetters} from "vuex";
     import UploadAvatar from "../Extra/UploadAvatar";
+    import auth from "../../store/modules/auth";
 
     export default {
         name: "EditUser",
@@ -154,17 +152,35 @@
             }),
         },
 
+        data() {
+            return {
+                interested_in: [],
+                originalName: null,
+                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                originalMonth: null
+            }
+        },
+
         created() {
             if (this.authUser.interest != 'both') {
                 this.interested_in.push(this.authUser.interest)
             } else {
                 this.interested_in.push('male', 'female')
             }
+
+            //Because we don't want to change the title while changing the value in the input field unless it's saved
+            this.originalName = this.authUser.name
         },
 
-        data() {
-            return {
-                interested_in: []
+        methods: {
+            dispatchUpdateUser(authUser) {
+                if (this.interested_in.length > 1 ) {
+                    authUser.interest = 'both'
+                } else {
+                    authUser.interest = this.interested_in[0]
+                }
+
+                this.$store.dispatch('updateUser', authUser)
             }
         }
     }

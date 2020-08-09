@@ -7,6 +7,7 @@ use App\Http\Resources\Friend as FriendResource;
 use App\Http\Resources\Avatar as AvatarResource;
 
 use App\Friend;
+use Carbon\Carbon;
 
 
 class User extends JsonResource
@@ -19,10 +20,16 @@ class User extends JsonResource
             'email' => $this->email,
             'city' => $this->city,
             'gender' => $this->gender,
-            //'birthday' => $this->birthday,
+            'birthday' => [
+                'when' => $this->birthday->format('d') - Carbon::now()->format('d'),
+                'age' => Carbon::now()->format('Y') - $this->birthday->format('Y'), //'y' displays 20 and 'Y' displays 2020
+                'day_name' => $this->birthday->format('l'),
+                'day' => $this->birthday->day,
+                'month' => $this->birthday->month,
+                'year' => $this->birthday->year,
+            ],
             'interest' => $this->interest,
             'about' => $this->about,
-
 
             'friendship' => new FriendResource(Friend::friendship($this->id)),
 

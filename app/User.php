@@ -12,7 +12,7 @@ use App\Comment;
 use App\Friend;
 use App\Avatar;
 use App\Item;
-
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -20,8 +20,10 @@ class User extends Authenticatable
 
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'city', 'gender', 'birthday', 'interest', 'about', 'password',
     ];
+
+    protected $dates = ['birthday'];
 
     protected $hidden = [
         'password', 'remember_token',
@@ -95,5 +97,11 @@ class User extends Authenticatable
                 $image->height = 750;
                 $image->type = 'profile';
             });
+    }
+
+    //While post or put request, the birthday would be a string of '27/05/2000'. It needs to be converted into Carbon date before saving into the database. That's why this inbuilt function is used.
+    public function setBirthdayAttribute($birthday)
+    {
+        $this->attributes['birthday'] = Carbon::parse($birthday);
     }
 }

@@ -6874,6 +6874,173 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayCard.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/BirthdayCard.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "BirthdayCard",
+  props: ['birthdayUser'],
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    authUser: 'authUser'
+  })),
+  data: function data() {
+    return {
+      body: '',
+      createMode: true,
+      alreadyWished: []
+    };
+  },
+  created: function created() {
+    this.alreadyWished = localStorage.getItem("alreadyWished").split(",");
+
+    if (this.alreadyWished.includes(this.birthdayUser.id.toString())) {
+      this.createMode = false;
+    }
+  },
+  methods: {
+    dispatchCreateBirthdayPost: function dispatchCreateBirthdayPost(body, friend_id) {
+      this.$store.dispatch('wishBirthday', {
+        body: body,
+        friend_id: friend_id
+      });
+      this.createMode = false;
+      localStorage.setItem("alreadyWished", "".concat(localStorage.getItem("alreadyWished"), ",").concat(this.birthdayUser.id));
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFeature.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/BirthdayFeature.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "BirthdayFeature",
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    authUser: 'authUser',
+    birthdays: 'birthdays'
+  })),
+  data: function data() {
+    return {
+      archiveMode: false
+    };
+  },
+  created: function created() {
+    this.$store.dispatch('fetchAllBirthdays');
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFilter.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/BirthdayFilter.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BirthdayCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BirthdayCard */ "./resources/js/components/Extra/BirthdayCard.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "BirthdayFilter",
+  components: {
+    BirthdayCard: _BirthdayCard__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  props: ['birthdays', 'title', 'current_date']
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/CommentCard.vue?vue&type=script&lang=js&":
 /*!****************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/CommentCard.vue?vue&type=script&lang=js& ***!
@@ -7286,6 +7453,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -7496,6 +7666,86 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return  false || this.newAvatar;
     }
   })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowBirthdays.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Feature/ShowBirthdays.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _ShowFeatures__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowFeatures */ "./resources/js/components/Feature/ShowFeatures.vue");
+/* harmony import */ var _Extra_BirthdayFilter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Extra/BirthdayFilter */ "./resources/js/components/Extra/BirthdayFilter.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ShowBirthdays",
+  components: {
+    BirthdayFilter: _Extra_BirthdayFilter__WEBPACK_IMPORTED_MODULE_2__["default"],
+    ShowFeatures: _ShowFeatures__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
+    birthdays: 'birthdays'
+  })),
+  data: function data() {
+    return {
+      current_date: new Date().toString().slice(4, 15)
+    };
+  },
+  created: function created() {
+    this.$store.dispatch('fetchAllBirthdays');
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowFeatures.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Feature/ShowFeatures.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Extra_BirthdayFeature__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Extra/BirthdayFeature */ "./resources/js/components/Extra/BirthdayFeature.vue");
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "ShowFeatures",
+  components: {
+    BirthdayFeature: _Extra_BirthdayFeature__WEBPACK_IMPORTED_MODULE_0__["default"]
+  }
 });
 
 /***/ }),
@@ -7933,17 +8183,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   })), {}, {
     homeButtonClass: function homeButtonClass() {
       if (this.title == 'NewsFeed | Facebook') {
-        return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-500 text-blue-500';
+        return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-600 text-blue-600';
       }
 
-      return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-500 hover:text-blue-500';
+      return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-600 hover:text-blue-600';
     },
     profileButtonClass: function profileButtonClass() {
       if (this.title == 'Profile | Facebook') {
-        return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-500';
+        return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-600';
       }
 
-      return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-500';
+      return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-600';
     }
   })
 });
@@ -7961,6 +8211,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Post_CreatePost__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Post/CreatePost */ "./resources/js/components/Post/CreatePost.vue");
 /* harmony import */ var _Post_ShowPosts__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Post/ShowPosts */ "./resources/js/components/Post/ShowPosts.vue");
+/* harmony import */ var _Feature_ShowFeatures__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Feature/ShowFeatures */ "./resources/js/components/Feature/ShowFeatures.vue");
 //
 //
 //
@@ -7969,11 +8220,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "NewsFeed",
   components: {
+    ShowFeatures: _Feature_ShowFeatures__WEBPACK_IMPORTED_MODULE_2__["default"],
     CreatePost: _Post_CreatePost__WEBPACK_IMPORTED_MODULE_0__["default"],
     ShowPosts: _Post_ShowPosts__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
@@ -8036,7 +8293,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       categoryMode: false,
       generalTabs: [{
-        to: '/birthday',
+        to: '/birthdays',
         show: User.loggedIn(),
         title: 'Birthday',
         icon: 'fas fa-birthday-cake'
@@ -8330,6 +8587,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _Extra_UploadAvatar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Extra/UploadAvatar */ "./resources/js/components/Extra/UploadAvatar.vue");
+/* harmony import */ var _store_modules_auth__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../store/modules/auth */ "./resources/js/store/modules/auth.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -8474,9 +8732,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -8487,17 +8743,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     authUser: 'authUser'
   })),
+  data: function data() {
+    return {
+      interested_in: [],
+      originalName: null,
+      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      originalMonth: null
+    };
+  },
   created: function created() {
     if (this.authUser.interest != 'both') {
       this.interested_in.push(this.authUser.interest);
     } else {
       this.interested_in.push('male', 'female');
-    }
+    } //Because we don't want to change the title while changing the value in the input field unless it's saved
+
+
+    this.originalName = this.authUser.name;
   },
-  data: function data() {
-    return {
-      interested_in: []
-    };
+  methods: {
+    dispatchUpdateUser: function dispatchUpdateUser(authUser) {
+      if (this.interested_in.length > 1) {
+        authUser.interest = 'both';
+      } else {
+        authUser.interest = this.interested_in[0];
+      }
+
+      this.$store.dispatch('updateUser', authUser);
+    }
   }
 });
 
@@ -31380,6 +31653,280 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.birthdayUser.id != _vm.authUser.id
+    ? _c("div", { staticClass: "flex p-2 items-center" }, [
+        _c("img", {
+          staticClass: "w-20 h-20 object-cover rounded-full",
+          attrs: {
+            src: "/storage/" + _vm.birthdayUser.profile_image.path,
+            alt: "Profile Image"
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "w-full ml-4" }, [
+          _c("div", { staticClass: "flex justify-between" }, [
+            _c("p", { staticClass: "text-sm font-bold text-blue-700" }, [
+              _vm._v(_vm._s(_vm.birthdayUser.name))
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "text-sm font-medium text-gray-600" }, [
+              _vm._v(_vm._s(_vm.birthdayUser.birthday.age) + " years old")
+            ])
+          ]),
+          _vm._v(" "),
+          _vm.createMode
+            ? _c("textarea", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.body,
+                    expression: "body"
+                  }
+                ],
+                staticClass:
+                  "w-full mt-2 p-2 border border-gray-500 text-xs text-gray-700",
+                attrs: {
+                  rows: "2",
+                  placeholder: "Wish your friend birthday here..."
+                },
+                domProps: { value: _vm.body },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.body = $event.target.value
+                  }
+                }
+              })
+            : _c(
+                "p",
+                { staticClass: "py-2 text-xs font-normal text-gray-600" },
+                [
+                  _vm._v(
+                    "The post has been successfully submitted on" +
+                      _vm._s(_vm.birthdayUser.name) +
+                      "'s newsfeed."
+                  )
+                ]
+              ),
+          _vm._v(" "),
+          _vm.createMode
+            ? _c(
+                "button",
+                {
+                  staticClass: "text-xs font-semibold text-blue-700",
+                  on: {
+                    click: function($event) {
+                      return _vm.dispatchCreateBirthdayPost(
+                        _vm.body,
+                        _vm.birthdayUser.id
+                      )
+                    }
+                  }
+                },
+                [_vm._v("Send")]
+              )
+            : _vm._e()
+        ])
+      ])
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true& ***!
+  \************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "w-5/6 bg-white rounded mt-4 shadow" },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "flex px-2 py-2 items-center border-b border-gray-400 justify-between"
+        },
+        [
+          _c("p", { staticClass: "text-gray-700 font-semibold text-sm" }, [
+            _vm._v("Birthdays")
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "text-blue-600 font-medium text-sm",
+              on: {
+                click: function($event) {
+                  _vm.archiveMode = !_vm.archiveMode
+                }
+              }
+            },
+            [_c("i", { staticClass: "fas fa-eye-slash" }), _vm._v(" Archive")]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.birthdays.week, function(birthdayUser, index) {
+        return !_vm.archiveMode
+          ? _c(
+              "div",
+              {
+                key: index,
+                staticClass: "flex p-2 justify-between items-center"
+              },
+              [
+                _c("img", {
+                  staticClass: "w-8 h-8 object-cover rounded-full",
+                  attrs: {
+                    src: "/storage/" + birthdayUser.profile_image.path,
+                    alt: "Profile Image"
+                  }
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex-auto mx-4" }, [
+                  _c("p", { staticClass: "text-sm font-bold text-blue-700" }, [
+                    _vm._v(_vm._s(birthdayUser.name))
+                  ]),
+                  _vm._v(" "),
+                  _c("div", [
+                    birthdayUser.birthday.when > 0
+                      ? _c("p", { staticClass: "text-xs text-gray-600" }, [
+                          _vm._v(
+                            "Has birthday in " +
+                              _vm._s(birthdayUser.birthday.when) +
+                              " Days"
+                          )
+                        ])
+                      : birthdayUser.birthday.when == 0
+                      ? _c("div", [
+                          birthdayUser.id != _vm.authUser.id
+                            ? _c(
+                                "p",
+                                { staticClass: "text-xs text-gray-600" },
+                                [_vm._v("Has birthday Today")]
+                              )
+                            : _c(
+                                "p",
+                                {
+                                  staticClass:
+                                    "text-xs text-gray-700 font-semibold"
+                                },
+                                [_vm._v("It's your birthday today!")]
+                              )
+                        ])
+                      : _c("p", { staticClass: "text-xs text-gray-600" }, [
+                          _vm._v(
+                            "Had birthday " +
+                              _vm._s(birthdayUser.birthday.when) +
+                              " Days ago"
+                          )
+                        ])
+                  ])
+                ])
+              ]
+            )
+          : _vm._e()
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "w-5/6 bg-white rounded my-4 shadow" },
+    [
+      _c(
+        "div",
+        {
+          staticClass:
+            "flex justify-between items-center px-2 py-2  border-b border-gray-400"
+        },
+        [
+          _c("p", { staticClass: "text-gray-800 font-semibold text-sm" }, [
+            _vm._v(_vm._s(_vm.title))
+          ]),
+          _vm._v(" "),
+          _c("p", { staticClass: "text-gray-600 font-medium text-sm" }, [
+            _vm._v(_vm._s(_vm.current_date))
+          ])
+        ]
+      ),
+      _vm._v(" "),
+      _vm._l(_vm.birthdays, function(birthdayUser, index) {
+        return _c(
+          "div",
+          { key: birthdayUser.id },
+          [_c("birthday-card", { attrs: { birthdayUser: birthdayUser } })],
+          1
+        )
+      })
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/CommentCard.vue?vue&type=template&id=5436ab95&scoped=true&":
 /*!********************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Extra/CommentCard.vue?vue&type=template&id=5436ab95&scoped=true& ***!
@@ -32151,7 +32698,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-2/3 bg-white rounded mt-6 shadow" }, [
+  return _c("div", { staticClass: "w-5/6 bg-white rounded mt-6 shadow" }, [
     _c("div", { staticClass: "p-4" }, [
       _c("div", { staticClass: "flex justify-between items-center" }, [
         _c("img", {
@@ -32164,9 +32711,28 @@ var render = function() {
         _vm._v(" "),
         !_vm.post.shared_post
           ? _c("div", { staticClass: "flex-auto mx-4" }, [
-              _c("p", { staticClass: "text-sm font-bold text-blue-700" }, [
-                _vm._v(_vm._s(_vm.post.posted_by.name))
-              ]),
+              !_vm.post.posted_on
+                ? _c("div", [
+                    _c(
+                      "p",
+                      { staticClass: "text-sm font-bold text-blue-700" },
+                      [_vm._v(_vm._s(_vm.post.posted_by.name))]
+                    )
+                  ])
+                : _c("div", [
+                    _c(
+                      "p",
+                      { staticClass: "text-sm font-bold text-blue-700" },
+                      [
+                        _vm._v(_vm._s(_vm.post.posted_by.name) + " "),
+                        _c("i", {
+                          staticClass:
+                            "fas fa-caret-right mx-1 text-md text-gray-500"
+                        }),
+                        _vm._v(" " + _vm._s(_vm.post.posted_on.name))
+                      ]
+                    )
+                  ]),
               _vm._v(" "),
               _c("p", { staticClass: "text-xs text-gray-600" }, [
                 _vm._v(_vm._s(_vm.post.created_at))
@@ -32656,6 +33222,90 @@ var render = function() {
       attrs: { src: "/storage/" + _vm.avatarObject.path, alt: _vm.avatarAlt }
     })
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true&":
+/*!************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Feature/ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true& ***!
+  \************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "flex" },
+    [
+      _c(
+        "div",
+        { staticClass: "flex flex-col w-8/12 items-center" },
+        [
+          _c("BirthdayFilter", {
+            attrs: {
+              birthdays: _vm.birthdays.today,
+              title: "Today's Birthdays",
+              current_date: _vm.current_date
+            }
+          }),
+          _vm._v(" "),
+          _c("BirthdayFilter", {
+            attrs: {
+              birthdays: _vm.birthdays.week,
+              title: "This Week's Birthdays"
+            }
+          }),
+          _vm._v(" "),
+          _c("BirthdayFilter", {
+            attrs: {
+              birthdays: _vm.birthdays.month,
+              title: "This Month's Birthdays"
+            }
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c("ShowFeatures")
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true&":
+/*!***********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Feature/ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true& ***!
+  \***********************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "w-4/12 mr-1 " }, [_c("BirthdayFeature")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -33250,7 +33900,7 @@ var render = function() {
           _c(
             "router-link",
             {
-              staticClass: "ml-12 mr-2 text-4xl text-blue-500",
+              staticClass: "ml-12 mr-2 text-4xl text-blue-600",
               attrs: { to: "/" }
             },
             [_c("i", { staticClass: "fab fa-facebook" })]
@@ -33355,8 +34005,17 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "flex flex-col items-center py-4" },
-    [_c("CreatePost"), _vm._v(" "), _c("ShowPosts")],
+    { staticClass: "flex" },
+    [
+      _c(
+        "div",
+        { staticClass: "flex flex-col w-8/12 items-center py-4" },
+        [_c("CreatePost"), _vm._v(" "), _c("ShowPosts")],
+        1
+      ),
+      _vm._v(" "),
+      _c("ShowFeatures")
+    ],
     1
   )
 }
@@ -33491,7 +34150,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-2/3 p-4 bg-white shadow rounded" }, [
+  return _c("div", { staticClass: "w-5/6 p-4 bg-white shadow rounded" }, [
     _c("div", { staticClass: "flex justify-between items-center" }, [
       _c("img", {
         staticClass: "w-8 h-8 object-cover rounded-full",
@@ -33742,7 +34401,7 @@ var render = function() {
       { staticClass: "w-full bg-white border-b-2 border-gray-400 shadow-sm" },
       [
         _c("p", { staticClass: "p-6 text-xl font-semibold text-gray-800" }, [
-          _vm._v(_vm._s(_vm.authUser.name) + " "),
+          _vm._v(_vm._s(_vm.originalName) + " "),
           _c("i", { staticClass: "fas fa-caret-right mx-2 text-gray-500" }),
           _vm._v(" Edit Profile")
         ])
@@ -33959,12 +34618,12 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.authUser.name,
-                              expression: "authUser.name"
+                              value: _vm.authUser.birthday.day,
+                              expression: "authUser.birthday.day"
                             }
                           ],
                           staticClass:
-                            "block w-16 h-6 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
+                            "block w-12 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -33976,8 +34635,8 @@ var render = function() {
                                   return val
                                 })
                               _vm.$set(
-                                _vm.authUser,
-                                "name",
+                                _vm.authUser.birthday,
+                                "day",
                                 $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
@@ -33985,11 +34644,10 @@ var render = function() {
                             }
                           }
                         },
-                        [
-                          _c("option", [_vm._v("Male")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("Female")])
-                        ]
+                        _vm._l(31, function(i) {
+                          return _c("option", [_vm._v(_vm._s(i))])
+                        }),
+                        0
                       ),
                       _vm._v(" "),
                       _vm._m(1)
@@ -34009,12 +34667,12 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.authUser.name,
-                              expression: "authUser.name"
+                              value: _vm.authUser.birthday.month,
+                              expression: "authUser.birthday.month"
                             }
                           ],
                           staticClass:
-                            "block w-12 h-6 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
+                            "block w-16 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -34026,8 +34684,8 @@ var render = function() {
                                   return val
                                 })
                               _vm.$set(
-                                _vm.authUser,
-                                "name",
+                                _vm.authUser.birthday,
+                                "month",
                                 $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
@@ -34035,11 +34693,14 @@ var render = function() {
                             }
                           }
                         },
-                        [
-                          _c("option", [_vm._v("Male")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("Female")])
-                        ]
+                        _vm._l(_vm.months, function(month, index) {
+                          return _c(
+                            "option",
+                            { domProps: { value: index + 1 } },
+                            [_vm._v(_vm._s(month))]
+                          )
+                        }),
+                        0
                       ),
                       _vm._v(" "),
                       _vm._m(2)
@@ -34059,12 +34720,12 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
-                              value: _vm.authUser.name,
-                              expression: "authUser.name"
+                              value: _vm.authUser.birthday.year,
+                              expression: "authUser.birthday.year"
                             }
                           ],
                           staticClass:
-                            "block w-16 h-6 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
+                            "block w-16 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
                           on: {
                             change: function($event) {
                               var $$selectedVal = Array.prototype.filter
@@ -34076,8 +34737,8 @@ var render = function() {
                                   return val
                                 })
                               _vm.$set(
-                                _vm.authUser,
-                                "name",
+                                _vm.authUser.birthday,
+                                "year",
                                 $event.target.multiple
                                   ? $$selectedVal
                                   : $$selectedVal[0]
@@ -34085,11 +34746,12 @@ var render = function() {
                             }
                           }
                         },
-                        [
-                          _c("option", [_vm._v("Male")]),
-                          _vm._v(" "),
-                          _c("option", [_vm._v("Female")])
-                        ]
+                        _vm._l(2020, function(i) {
+                          return i > 1995
+                            ? _c("option", [_vm._v(_vm._s(i))])
+                            : _vm._e()
+                        }),
+                        0
                       ),
                       _vm._v(" "),
                       _vm._m(3)
@@ -34229,7 +34891,37 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _vm._m(5)
+          _c("div", { staticClass: "flex justify-end py-6" }, [
+            _c(
+              "button",
+              {
+                staticClass:
+                  "px-2 py-1 mr-2 bg-blue-700 text-white text-sm font-semibold shadow-md focus:outline-none",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.dispatchUpdateUser(_vm.authUser)
+                  }
+                }
+              },
+              [_vm._v("Save")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "px-2 py-1 mr-2 bg-gray-200 text-gray-600 text-sm font-semibold shadow-md border border-gray-400 focus:outline-none",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.$router.push("/")
+                  }
+                }
+              },
+              [_vm._v("Cancel")]
+            )
+          ])
         ]
       )
     ])
@@ -34315,32 +35007,6 @@ var staticRenderFns = [
             "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
         },
         [_c("i", { staticClass: "fas fa-caret-down" })]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "flex justify-end py-6" }, [
-      _c(
-        "button",
-        {
-          staticClass:
-            "px-2 py-1 mr-2 bg-blue-700 text-white text-sm font-semibold shadow-md focus:outline-none",
-          attrs: { type: "button" }
-        },
-        [_vm._v("Save")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass:
-            "px-2 py-1 mr-2 bg-gray-200 text-gray-600 text-sm font-semibold shadow-md border border-gray-400 focus:outline-none",
-          attrs: { type: "button" }
-        },
-        [_vm._v("Cancel")]
       )
     ])
   }
@@ -51294,6 +51960,213 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Extra/BirthdayCard.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayCard.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BirthdayCard_vue_vue_type_template_id_09f92ad2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true& */ "./resources/js/components/Extra/BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true&");
+/* harmony import */ var _BirthdayCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BirthdayCard.vue?vue&type=script&lang=js& */ "./resources/js/components/Extra/BirthdayCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BirthdayCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BirthdayCard_vue_vue_type_template_id_09f92ad2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BirthdayCard_vue_vue_type_template_id_09f92ad2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "09f92ad2",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Extra/BirthdayCard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayCard.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayCard.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BirthdayCard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayCard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayCard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true& ***!
+  \***************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayCard_vue_vue_type_template_id_09f92ad2_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayCard.vue?vue&type=template&id=09f92ad2&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayCard_vue_vue_type_template_id_09f92ad2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayCard_vue_vue_type_template_id_09f92ad2_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayFeature.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayFeature.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BirthdayFeature_vue_vue_type_template_id_e80ab982_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true& */ "./resources/js/components/Extra/BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true&");
+/* harmony import */ var _BirthdayFeature_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BirthdayFeature.vue?vue&type=script&lang=js& */ "./resources/js/components/Extra/BirthdayFeature.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BirthdayFeature_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BirthdayFeature_vue_vue_type_template_id_e80ab982_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BirthdayFeature_vue_vue_type_template_id_e80ab982_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "e80ab982",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Extra/BirthdayFeature.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayFeature.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayFeature.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFeature_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BirthdayFeature.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFeature.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFeature_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true& ***!
+  \******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFeature_vue_vue_type_template_id_e80ab982_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFeature.vue?vue&type=template&id=e80ab982&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFeature_vue_vue_type_template_id_e80ab982_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFeature_vue_vue_type_template_id_e80ab982_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayFilter.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayFilter.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BirthdayFilter_vue_vue_type_template_id_0371c73f_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true& */ "./resources/js/components/Extra/BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true&");
+/* harmony import */ var _BirthdayFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BirthdayFilter.vue?vue&type=script&lang=js& */ "./resources/js/components/Extra/BirthdayFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BirthdayFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BirthdayFilter_vue_vue_type_template_id_0371c73f_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BirthdayFilter_vue_vue_type_template_id_0371c73f_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "0371c73f",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Extra/BirthdayFilter.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayFilter.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayFilter.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BirthdayFilter.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFilter.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFilter_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Extra/BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/Extra/BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFilter_vue_vue_type_template_id_0371c73f_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Extra/BirthdayFilter.vue?vue&type=template&id=0371c73f&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFilter_vue_vue_type_template_id_0371c73f_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BirthdayFilter_vue_vue_type_template_id_0371c73f_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Extra/CommentCard.vue":
 /*!*******************************************************!*\
   !*** ./resources/js/components/Extra/CommentCard.vue ***!
@@ -51739,6 +52612,144 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UploadAvatar_vue_vue_type_template_id_890af0b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UploadAvatar_vue_vue_type_template_id_890af0b8_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Feature/ShowBirthdays.vue":
+/*!***********************************************************!*\
+  !*** ./resources/js/components/Feature/ShowBirthdays.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ShowBirthdays_vue_vue_type_template_id_03a11376_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true& */ "./resources/js/components/Feature/ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true&");
+/* harmony import */ var _ShowBirthdays_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowBirthdays.vue?vue&type=script&lang=js& */ "./resources/js/components/Feature/ShowBirthdays.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ShowBirthdays_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ShowBirthdays_vue_vue_type_template_id_03a11376_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ShowBirthdays_vue_vue_type_template_id_03a11376_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "03a11376",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Feature/ShowBirthdays.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Feature/ShowBirthdays.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/Feature/ShowBirthdays.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowBirthdays_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShowBirthdays.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowBirthdays.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowBirthdays_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Feature/ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/Feature/ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true& ***!
+  \******************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowBirthdays_vue_vue_type_template_id_03a11376_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowBirthdays.vue?vue&type=template&id=03a11376&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowBirthdays_vue_vue_type_template_id_03a11376_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowBirthdays_vue_vue_type_template_id_03a11376_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/Feature/ShowFeatures.vue":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/Feature/ShowFeatures.vue ***!
+  \**********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ShowFeatures_vue_vue_type_template_id_68d4a05e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true& */ "./resources/js/components/Feature/ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true&");
+/* harmony import */ var _ShowFeatures_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ShowFeatures.vue?vue&type=script&lang=js& */ "./resources/js/components/Feature/ShowFeatures.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ShowFeatures_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ShowFeatures_vue_vue_type_template_id_68d4a05e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ShowFeatures_vue_vue_type_template_id_68d4a05e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "68d4a05e",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Feature/ShowFeatures.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Feature/ShowFeatures.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/Feature/ShowFeatures.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFeatures_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShowFeatures.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowFeatures.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFeatures_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Feature/ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/Feature/ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true& ***!
+  \*****************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFeatures_vue_vue_type_template_id_68d4a05e_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Feature/ShowFeatures.vue?vue&type=template&id=68d4a05e&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFeatures_vue_vue_type_template_id_68d4a05e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowFeatures_vue_vue_type_template_id_68d4a05e_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -52539,6 +53550,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_User_EditUser__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/User/EditUser */ "./resources/js/components/User/EditUser.vue");
 /* harmony import */ var _components_Item_ShowItems__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Item/ShowItems */ "./resources/js/components/Item/ShowItems.vue");
 /* harmony import */ var _components_Item_ShowItem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Item/ShowItem */ "./resources/js/components/Item/ShowItem.vue");
+/* harmony import */ var _components_Feature_ShowBirthdays__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/Feature/ShowBirthdays */ "./resources/js/components/Feature/ShowBirthdays.vue");
+
 
 
 
@@ -52614,6 +53627,12 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
     component: _components_Item_ShowItems__WEBPACK_IMPORTED_MODULE_6__["default"],
     meta: {
       title: 'Categories'
+    }
+  }, {
+    path: '/birthdays',
+    component: _components_Feature_ShowBirthdays__WEBPACK_IMPORTED_MODULE_8__["default"],
+    meta: {
+      title: 'Birthday'
     }
   }],
   mode: 'history',
@@ -52841,6 +53860,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_comments_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/comments.js */ "./resources/js/store/modules/comments.js");
 /* harmony import */ var _modules_items_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/items.js */ "./resources/js/store/modules/items.js");
 /* harmony import */ var _modules_categories_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/categories.js */ "./resources/js/store/modules/categories.js");
+/* harmony import */ var _modules_user_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/user.js */ "./resources/js/store/modules/user.js");
+/* harmony import */ var _modules_features_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/features.js */ "./resources/js/store/modules/features.js");
+
+
 
 
 
@@ -52859,7 +53882,9 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
     Posts: _modules_posts_js__WEBPACK_IMPORTED_MODULE_5__["default"],
     Comments: _modules_comments_js__WEBPACK_IMPORTED_MODULE_6__["default"],
     Items: _modules_items_js__WEBPACK_IMPORTED_MODULE_7__["default"],
-    Categories: _modules_categories_js__WEBPACK_IMPORTED_MODULE_8__["default"]
+    Categories: _modules_categories_js__WEBPACK_IMPORTED_MODULE_8__["default"],
+    User: _modules_user_js__WEBPACK_IMPORTED_MODULE_9__["default"],
+    Features: _modules_features_js__WEBPACK_IMPORTED_MODULE_10__["default"]
   }
 }));
 
@@ -53099,6 +54124,67 @@ var mutations = {
     _posts__WEBPACK_IMPORTED_MODULE_0__["default"].state.posts[data.post_index].comments.data[data.comment_index].favourites = data.favourites;
     _posts__WEBPACK_IMPORTED_MODULE_0__["default"].state.posts[data.post_index].comments.data[data.comment_index].user_favourited = !_posts__WEBPACK_IMPORTED_MODULE_0__["default"].state.posts[data.post_index].comments.data[data.comment_index].user_favourited;
     _posts__WEBPACK_IMPORTED_MODULE_0__["default"].state.posts[data.post_index].comments.data[data.comment_index].favourited_type = data.favourites.data[0].type;
+  }
+};
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/features.js":
+/*!************************************************!*\
+  !*** ./resources/js/store/modules/features.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var state = {
+  birthdays: '',
+  birthdayErrors: ''
+};
+var getters = {
+  birthdays: function birthdays(state) {
+    return state.birthdays;
+  },
+  birthdayErrors: function birthdayErrors(state) {
+    return state.birthdayErrors;
+  }
+};
+var actions = {
+  fetchAllBirthdays: function fetchAllBirthdays(_ref) {
+    var commit = _ref.commit,
+        state = _ref.state;
+    axios.post('/api/filter-birthdays').then(function (res) {
+      return commit('setBirthdays', res.data);
+    })["catch"](function (err) {
+      return commit('setBirthdayErrors', err);
+    });
+  },
+  wishBirthday: function wishBirthday(_ref2, data) {
+    var commit = _ref2.commit,
+        state = _ref2.state;
+    axios.post('/api/wish-birthday', {
+      body: data.body,
+      friend_id: data.friend_id
+    }).then(function (res) {
+      return console.log(res.data);
+    })["catch"](function (err) {
+      return commit('setBirthdayErrors', err);
+    });
+  }
+};
+var mutations = {
+  setBirthdays: function setBirthdays(state, birthdays) {
+    state.birthdays = birthdays;
+  },
+  setBirthdayErrors: function setBirthdayErrors(state, err) {
+    state.birthdayErrors = err;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -53514,6 +54600,48 @@ var mutations = {
     document.title = state.title;
   }
 };
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: state,
+  getters: getters,
+  actions: actions,
+  mutations: mutations
+});
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/user.js":
+/*!********************************************!*\
+  !*** ./resources/js/store/modules/user.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../router */ "./resources/js/router.js");
+
+var state = {};
+var getters = {};
+var actions = {
+  updateUser: function updateUser(_ref, user) {
+    var commit = _ref.commit,
+        state = _ref.state;
+    axios.put('/api/users/' + user.id, {
+      name: user.name,
+      email: user.email,
+      city: user.city,
+      gender: user.gender,
+      birthday: user.birthday.day + '/' + user.birthday.month + '/' + user.birthday.year,
+      interest: user.interest,
+      about: user.about
+    }).then(function (res) {
+      return _router__WEBPACK_IMPORTED_MODULE_0__["default"].push('/');
+    })["catch"](function (err) {
+      return commit('setUserErrors', err);
+    });
+  }
+};
+var mutations = {};
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: state,
   getters: getters,

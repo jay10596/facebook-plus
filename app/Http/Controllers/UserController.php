@@ -26,9 +26,11 @@ class UserController extends Controller
         return [new UserResource($user), new PostCollection($user->posts()->latest()->get())];
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $user->update($request->all());
+
+        return (new UserResource($user))->response()->setStatusCode(201);
     }
 
     public function destroy($id)

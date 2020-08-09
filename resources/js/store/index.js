@@ -7,6 +7,8 @@ import Posts from './modules/posts.js'
 import Comments from './modules/comments.js'
 import Items from './modules/items.js'
 import Categories from './modules/categories.js'
+import User from './modules/user.js'
+import Features from './modules/features.js'
 
 Vue.use(Vuex);
 
@@ -18,6 +20,8 @@ export default new Vuex.Store({
         Posts,
         Comments,
         Items,
-        Categories
+        Categories,
+        User,
+        Features
     }
 });

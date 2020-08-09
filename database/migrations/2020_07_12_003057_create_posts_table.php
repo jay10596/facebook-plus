@@ -12,6 +12,7 @@ class CreatePostsTable extends Migration
             $table->id();
             $table->string('body');
             $table->unsignedBigInteger('repost_id')->nullable();
+            $table->unsignedBigInteger('friend_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
 

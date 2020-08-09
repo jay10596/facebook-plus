@@ -10,7 +10,7 @@ use App\Comment;
 
 class Post extends Model
 {
-    protected $fillable = ['body', 'repost_id', 'user_id'];
+    protected $fillable = ['body', 'repost_id', 'friend_id', 'user_id'];
 
     public function getPathAttribute()
     {

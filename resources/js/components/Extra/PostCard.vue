@@ -1,16 +1,19 @@
 <template>
-    <div class="w-2/3 bg-white rounded mt-6 shadow">
+    <div class="w-5/6 bg-white rounded mt-6 shadow">
         <div class="p-4">
             <div class="flex justify-between items-center">
                 <img class="w-8 h-8 object-cover rounded-full" :src="'/storage/' + post.posted_by.profile_image.path" alt="Profile Image">
 
                 <div v-if="! post.shared_post" class="flex-auto mx-4">
-                    <p class="text-sm font-bold text-blue-700">{{post.posted_by.name}}</p>
+                    <div v-if="! post.posted_on"><p class="text-sm font-bold text-blue-700">{{post.posted_by.name}}</p></div>
+                    <div v-else><p class="text-sm font-bold text-blue-700">{{post.posted_by.name}} <i class="fas fa-caret-right mx-1 text-md text-gray-500"></i> {{post.posted_on.name}}</p></div>
+
                     <p class="text-xs text-gray-600">{{post.created_at}}</p>
                 </div>
 
                 <div v-else class="flex-auto mx-4">
                     <p class="text-sm text-gray-600"><span class="font-bold text-blue-700">{{post.posted_by.name}}</span> shared a <span class="font-bold text-blue-700">Post </span></p>
+
                     <div><p class="text-xs text-gray-600">{{post.created_at}} <i class="fas fa-retweet ml-1"></i></p></div>
                 </div>
 

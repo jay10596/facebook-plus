@@ -44,7 +44,7 @@
                 categoryMode: false,
 
                 generalTabs: [
-                    {to: '/birthday', show: User.loggedIn(), title: 'Birthday', icon: 'fas fa-birthday-cake'},
+                    {to: '/birthdays', show: User.loggedIn(), title: 'Birthday', icon: 'fas fa-birthday-cake'},
                     {to: '/edituser', show: User.loggedIn(), title: 'Edit Profile', icon: 'fas fa-user-cog'},
                     {to: '/items', show: User.loggedIn(), title: 'Marketplace', icon: 'fas fa-store-alt'},
                 ],

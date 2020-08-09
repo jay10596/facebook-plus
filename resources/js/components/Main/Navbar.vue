@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center bg-white h-12 border-b border-gray-400 shadow-sm">
         <div class="flex justify-start items-center">
-            <router-link to="/" class="ml-12 mr-2 text-4xl text-blue-500">
+            <router-link to="/" class="ml-12 mr-2 text-4xl text-blue-600">
                 <i class="fab fa-facebook"></i>
             </router-link>
 
@@ -49,16 +49,16 @@
 
             homeButtonClass() {
                 if(this.title == 'NewsFeed | Facebook') {
-                    return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-500 text-blue-500'
+                    return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-600 text-blue-600'
                 }
-                return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-500 hover:text-blue-500'
+                return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-600 hover:text-blue-600'
             },
 
             profileButtonClass() {
                 if(this.title == 'Profile | Facebook') {
-                    return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-500'
+                    return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-600'
                 }
-                return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-500'
+                return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-600'
             }
         }
     }
