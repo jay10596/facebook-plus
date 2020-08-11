@@ -82,6 +82,8 @@ class PostTest extends TestCase
 
                     'pictures' => [],
 
+                    'posted_on' => null,
+
                     'posted_by' => [
                         'id' => $user2->id,
                         'name' => $user2->name,
@@ -103,6 +105,8 @@ class PostTest extends TestCase
                     'pictures' => [],
 
                     'shared_post' => null,
+
+                    'posted_on' => null,
 
                     'posted_by' => [
                         'id' => $user2->id,
@@ -170,6 +174,8 @@ class PostTest extends TestCase
                 'pictures' => [],
 
                 'shared_post' => null,
+
+                'posted_on' => null,
 
                 'posted_by' => [
                     'id' => $this->user->id,
@@ -246,8 +252,6 @@ class PostTest extends TestCase
     /** @test */
     public function auth_user_can_create_multiple_pictures_post()
     {
-        $this->withoutExceptionHandling();
-
         $this->actingAs($user = factory(User::class)->create(), 'api'); //It just logs in the user
 
         $file1 = UploadedFile::fake()->image('postImage1.jpg');
@@ -310,6 +314,8 @@ class PostTest extends TestCase
 
                 'shared_post' => null,
 
+                'posted_on' => null,
+
                 'posted_by' => [
                     'id' => $user->id,
                     'name' => $user->name,
@@ -350,6 +356,8 @@ class PostTest extends TestCase
                 'pictures' => [],
 
                 'shared_post' => null,
+
+                'posted_on' => null,
 
                 'posted_by' => [
                     'id' => $user->id,
@@ -413,6 +421,8 @@ class PostTest extends TestCase
                 ],
 
                 'shared_post' => null,
+
+                'posted_on' => null,
 
                 'posted_by' => [
                     'id' => $user->id,
@@ -495,6 +505,8 @@ class PostTest extends TestCase
                         ]
                     ],
 
+                    'posted_on' => null,
+
                     'posted_by' => [
                         'id' => $user->id,
                         'name' => $user->name,
@@ -545,8 +557,6 @@ class PostTest extends TestCase
     /** @test */
     public function posts_are_returned_with_likes()
     {
-        $this->withoutExceptionHandling();
-
         $this->actingAs($user = factory(User::class)->create(), 'api'); //It just logs in the user
 
         $post = factory(Post::class)->create(['id' => 123, 'user_id' => $user->id]);
@@ -586,6 +596,8 @@ class PostTest extends TestCase
 
                     'shared_post' => null,
 
+                    'posted_on' => null,
+
                     'posted_by' => [
                         'id' => $user->id,
                         'name' => $user->name,
@@ -598,6 +610,56 @@ class PostTest extends TestCase
             'links' => [
                 'self' => '/posts',
             ],
+        ]);
+    }
+
+    /** @test */
+    public function auth_user_can_create_text_post_on_newsfeed_of_other_user()
+    {
+        $this->actingAs($user1 = factory(User::class)->create(), 'api'); //It just logs in the user
+
+        $user2 = factory(User::class)->create();
+
+        $response = $this->post('/api/posts', ['body' => 'Happy birthday my friend', 'friend_id' => $user2->id, 'user_id' => $user1->id]);
+
+        $response->assertStatus(201);
+
+        $this->assertCount(1, Post::all());
+
+        $post = Post::first();
+
+        $this->assertEquals('Happy birthday my friend', $post->body);
+        $this->assertEquals($post->friend_id, $user2->id);
+
+        $response->assertJson([
+            'data' => [
+                'id' => $post->id,
+                'body' => $post->body,
+                'user_id' => $post->user_id,
+                'created_at' => $post->created_at->diffForHumans(),
+
+                'comments' => [],
+
+                'likes' => [],
+
+                'pictures' => [],
+
+                'shared_post' => null,
+
+                'posted_on' => [
+                    'id' => $user2->id,
+                    'name' => $user2->name,
+                    'email' => $user2->email,
+                ],
+
+                'posted_by' => [
+                    'id' => $user1->id,
+                    'name' => $user1->name,
+                    'email' => $user1->email,
+                ],
+
+                'path' => $post->path
+            ]
         ]);
     }
 

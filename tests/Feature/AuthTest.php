@@ -39,6 +39,11 @@ class AuthTest extends TestCase
         return [
             'name' => 'user',
             'email' => 'user@test.com',
+            'city' => 'New York',
+            'gender' => 'male',
+            'birthday' => '1996/05/27',
+            'interest' => 'female',
+            'about' => 'Hi, My name is Jay.I like football.',
             'password' => 'password',
             'confirm_password' => 'password'
         ];

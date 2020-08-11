@@ -41,6 +41,38 @@ class UserTest extends TestCase
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
+            'city' => $user->city,
+            'gender' => $user->gender,
+            'birthday' => [
+                'when' => $user->birthday->format('d') - Carbon::now()->format('d'),
+                'age' => Carbon::now()->format('Y') - $user->birthday->format('Y'),
+                'day_name' => $user->birthday->format('l'),
+                'day' => $user->birthday->day,
+                'month' => $user->birthday->month,
+                'year' => $user->birthday->year,
+            ],
+            'interest' => $user->interest,
+            'about' => $user->about,
+
+            'friendship' => [],
+
+            //This is default settings when no cover pic is uploaded
+            'cover_image' => [
+                'path' => 'uploadedAvatars/cover.jpg',
+                'width' => 1500,
+                'height' => 500,
+                'type' => 'cover',
+            ],
+
+            //This is default settings when no profile pic is uploaded
+            'profile_image' => [
+                'path' => 'uploadedAvatars/profile.jpg',
+                'width' => 750,
+                'height' => 750,
+                'type' => 'profile',
+            ],
+
+            'path' => $user->path
         ]);
     }
 
@@ -57,8 +89,41 @@ class UserTest extends TestCase
 
         $response->assertJson([
             [
+                'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'city' => $user->city,
+                'gender' => $user->gender,
+                'birthday' => [
+                    'when' => $user->birthday->format('d') - Carbon::now()->format('d'),
+                    'age' => Carbon::now()->format('Y') - $user->birthday->format('Y'),
+                    'day_name' => $user->birthday->format('l'),
+                    'day' => $user->birthday->day,
+                    'month' => $user->birthday->month,
+                    'year' => $user->birthday->year,
+                ],
+                'interest' => $user->interest,
+                'about' => $user->about,
+
+                'friendship' => [],
+
+                //This is default settings when no cover pic is uploaded
+                'cover_image' => [
+                    'path' => 'uploadedAvatars/cover.jpg',
+                    'width' => 1500,
+                    'height' => 500,
+                    'type' => 'cover',
+                ],
+
+                //This is default settings when no profile pic is uploaded
+                'profile_image' => [
+                    'path' => 'uploadedAvatars/profile.jpg',
+                    'width' => 750,
+                    'height' => 750,
+                    'type' => 'profile',
+                ],
+
+                'path' => $user->path
             ],
             [
                 'data' => [
@@ -97,6 +162,8 @@ class UserTest extends TestCase
                         'pictures' => [],
 
                         'shared_post' => null,
+
+                        'posted_on' => null,
 
                         'posted_by' => [
                             'id' => $user->id,
@@ -139,7 +206,6 @@ class UserTest extends TestCase
 
         $response->assertJson([
             'data' => [
-                'id' => $avatar->id,
                 'path' => $avatar->path,
                 'width' => $avatar->width,
                 'height' => $avatar->height,
@@ -180,20 +246,36 @@ class UserTest extends TestCase
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
+                'city' => $user->city,
+                'gender' => $user->gender,
+                'birthday' => [
+                    'when' => $user->birthday->format('d') - Carbon::now()->format('d'),
+                    'age' => Carbon::now()->format('Y') - $user->birthday->format('Y'),
+                    'day_name' => $user->birthday->format('l'),
+                    'day' => $user->birthday->day,
+                    'month' => $user->birthday->month,
+                    'year' => $user->birthday->year,
+                ],
+                'interest' => $user->interest,
+                'about' => $user->about,
+
+                'friendship' => [],
 
                 'cover_image' => [
-                    'id' => $coverAvatar->id,
+                    'path' => $coverAvatar->path,
                     'width' => $coverAvatar->width,
                     'height' => $coverAvatar->height,
                     'type' => $coverAvatar->type,
                 ],
 
                 'profile_image' => [
-                    'id' => $profileAvatar->id,
+                    'path' => $profileAvatar->path,
                     'width' => $profileAvatar->width,
                     'height' => $profileAvatar->height,
                     'type' => $profileAvatar->type,
-                ]
+                ],
+
+                'path' => $user->path
             ],
             [
                 'data' =>[],
@@ -234,8 +316,6 @@ class UserTest extends TestCase
     /** @test */
     public function auth_user_can_accept_friend_request()
     {
-        $this->withoutExceptionHandling();
-
         $this->actingAs($user1 = factory(User::class)->create(), 'api'); //It just logs in the user
 
         $user2 = factory(User::class)->create();
@@ -541,5 +621,58 @@ class UserTest extends TestCase
         $friendRequest = Friend::all(); //To grab first row from the friend's table
 
         $this->assertCount(1, $friendRequest);
+    }
+
+    /** @test */
+    public function auth_user_can_edit_his_profile()
+    {
+        $this->withExceptionHandling();
+
+        $this->actingAs($user = factory(User::class)->create(), 'api'); //It just logs in the user
+
+        $response = $this->put('/api/users/' . $user->id, ['gender' => 'female', 'city' => 'New City', 'about' => 'Edited info about me']);
+
+        $response->assertStatus(201);
+
+        //AuthController->Me() does not contain data[] but UserController->update() contains. Check both controller to understand the difference.
+        $response->assertJson([
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'city' => 'New City',
+                'gender' => 'female',
+                'birthday' => [
+                    'when' => $user->birthday->format('d') - Carbon::now()->format('d'),
+                    'age' => Carbon::now()->format('Y') - $user->birthday->format('Y'),
+                    'day_name' => $user->birthday->format('l'),
+                    'day' => $user->birthday->day,
+                    'month' => $user->birthday->month,
+                    'year' => $user->birthday->year,
+                ],
+                'interest' => $user->interest,
+                'about' => 'Edited info about me',
+
+                'friendship' => [],
+
+                //This is default settings when no cover pic is uploaded
+                'cover_image' => [
+                    'path' => 'uploadedAvatars/cover.jpg',
+                    'width' => 1500,
+                    'height' => 500,
+                    'type' => 'cover',
+                ],
+
+                //This is default settings when no profile pic is uploaded
+                'profile_image' => [
+                    'path' => 'uploadedAvatars/profile.jpg',
+                    'width' => 750,
+                    'height' => 750,
+                    'type' => 'profile',
+                ],
+
+                'path' => $user->path
+            ]
+        ]);
     }
 }
