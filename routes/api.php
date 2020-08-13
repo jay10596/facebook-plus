@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+//Every route in this file MUST have an api prefix.
 
 //AUTH
 Route::post('/login', 'AuthController@login');
@@ -11,11 +12,11 @@ Route::post('/me', 'AuthController@me');
 Route::post('/logout', 'AuthController@logout');
 //auth middleware in Constructor of AuthController is added. If not, I need to put me and logout routes inside the Route::middleware('auth:api') group
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
+//SOCIALITE
+Route::get('/login/{provider}', 'AuthController@redirectToProvider');
+Route::get('/login/{provider}/callback', 'AuthController@handleProviderCallback');
 
+Route::middleware('auth:api')->group(function () {
     //CRUD
     Route::apiResource('/posts', 'PostController');
     Route::apiResource('/users', 'UserController');
@@ -45,5 +46,4 @@ Route::middleware('auth:api')->group(function () {
     //FEATURES
     Route::post('/filter-birthdays', 'FeatureController@filterBirthdays');
     Route::post('/wish-birthday', 'FeatureController@wishBirthday');
-
 });

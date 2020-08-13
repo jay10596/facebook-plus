@@ -6604,6 +6604,13 @@ __webpack_require__.r(__webpack_exports__);
     EventBus.$on('changingRegisterMode', function () {
       _this.registerMode = !_this.registerMode;
     });
+
+    if (this.$attrs.email) {
+      this.$store.dispatch('loginUser', {
+        email: this.$attrs.email,
+        password: 'password'
+      });
+    }
   },
   watch: {
     $route: function $route(to, from) {
@@ -6662,9 +6669,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Login",
+  props: ['title'],
   data: function data() {
     return {
       loginForm: {
@@ -6750,6 +6763,102 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Register",
@@ -6758,9 +6867,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       registerForm: {
         name: '',
         email: '',
+        city: '',
+        gender: '',
+        birthday: '',
+        interest: '',
+        about: '',
         password: '',
         confirm_password: ''
-      }
+      },
+      interested_in: [],
+      months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      day: 1,
+      month: 1,
+      year: 1996
     };
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
@@ -6770,8 +6889,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     changeRegisterMode: function changeRegisterMode() {
       EventBus.$emit('changingRegisterMode');
     },
-    dispatchRegister: function dispatchRegister(registerForm) {
-      this.$store.dispatch('registerUser', registerForm);
+    dispatchRegister: function dispatchRegister() {
+      this.editFields();
+      this.$store.dispatch('registerUser', this.registerForm);
+    },
+    editFields: function editFields() {
+      if (this.interested_in.length > 1) {
+        this.registerForm.interest = 'both';
+      } else {
+        this.registerForm.interest = this.interested_in[0];
+      }
+
+      this.registerForm.birthday = this.year + '-' + this.month + '-' + this.day;
     }
   }
 });
@@ -31290,38 +31419,59 @@ var render = function() {
                 ])
               : _vm._e(),
             _vm._v(" "),
-            _c("div", { staticClass: "flex items-center justify-between" }, [
-              _c(
-                "button",
-                {
-                  staticClass:
-                    "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none",
-                  on: {
-                    click: function($event) {
-                      return _vm.dispatchLogin(_vm.loginForm)
+            _c(
+              "div",
+              { staticClass: "flex items-center justify-between mb-4" },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass:
+                      "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none",
+                    on: {
+                      click: function($event) {
+                        return _vm.dispatchLogin(_vm.loginForm)
+                      }
                     }
-                  }
-                },
-                [_vm._v("Log In")]
-              ),
-              _vm._v(" "),
-              _c(
-                "a",
-                {
-                  staticClass:
-                    "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800",
-                  on: { click: _vm.changeRegisterMode }
-                },
-                [_vm._v("Click Here To Register!")]
-              )
-            ])
+                  },
+                  [_vm._v("Log In")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800",
+                    on: { click: _vm.changeRegisterMode }
+                  },
+                  [_vm._v("Click Here To Register!")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _vm._m(0)
           ]
         )
       ])
     ]
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-center justify-end text-xl" }, [
+      _c("a", { attrs: { href: "api/login/github" } }, [
+        _c("i", { staticClass: "fab fa-github mx-2" })
+      ]),
+      _vm._v(" "),
+      _c("a", { attrs: { href: "api/login/google" } }, [
+        _c("i", { staticClass: "fab fa-google ml-2 text-green-600" })
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -31343,224 +31493,659 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "flex h-screen items-center justify-center" },
-    [
-      _c("div", { staticClass: "w-full max-w-xs" }, [
-        _c(
-          "form",
-          {
-            staticClass: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4",
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.dispatchRegister(_vm.registerForm)
-              }
+  return _c("div", { staticClass: "flex h-full items-center justify-center" }, [
+    _c("div", { staticClass: "w-full max-w-xs" }, [
+      _c(
+        "form",
+        {
+          staticClass: "bg-white shadow-md rounded px-8 pt-6 pb-8 my-4",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.dispatchRegister(_vm.registerForm)
             }
-          },
-          [
-            _c("div", { staticClass: "mb-4" }, [
-              _c(
-                "label",
-                { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
-                [_vm._v("Name")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.registerForm.name,
-                    expression: "registerForm.name"
-                  }
-                ],
-                staticClass:
-                  "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
-                attrs: {
-                  id: "username",
-                  type: "text",
-                  placeholder: "Username"
-                },
-                domProps: { value: _vm.registerForm.name },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.registerForm, "name", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _vm.authErrors && _vm.authErrors.meta.name
-                ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
-                    _vm._v(_vm._s(_vm.authErrors.meta.name[0]))
-                  ])
-                : _vm._e()
-            ]),
+          }
+        },
+        [
+          _c("div", { staticClass: "mb-4" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("Name")]
+            ),
             _vm._v(" "),
-            _c("div", { staticClass: "mb-4" }, [
-              _c(
-                "label",
-                { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
-                [_vm._v("Email")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.registerForm.email,
-                    expression: "registerForm.email"
-                  }
-                ],
-                staticClass:
-                  "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
-                attrs: {
-                  id: "username",
-                  type: "text",
-                  placeholder: "Username"
-                },
-                domProps: { value: _vm.registerForm.email },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.registerForm, "email", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _vm.authErrors && _vm.authErrors.meta.email
-                ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
-                    _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mb-6" }, [
-              _c(
-                "label",
-                { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
-                [_vm._v("Password")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.registerForm.password,
-                    expression: "registerForm.password"
-                  }
-                ],
-                staticClass:
-                  "shadow appearance-none rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline",
-                attrs: {
-                  id: "password",
-                  type: "password",
-                  placeholder: "******************"
-                },
-                domProps: { value: _vm.registerForm.password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(_vm.registerForm, "password", $event.target.value)
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _vm.authErrors && _vm.authErrors.meta.password
-                ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
-                    _vm._v(_vm._s(_vm.authErrors.meta.password[0]))
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "mb-6" }, [
-              _c(
-                "label",
-                { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
-                [_vm._v("Confirm Password")]
-              ),
-              _vm._v(" "),
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.registerForm.confirm_password,
-                    expression: "registerForm.confirm_password"
-                  }
-                ],
-                staticClass:
-                  "shadow appearance-none rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline",
-                attrs: {
-                  id: "password",
-                  type: "password",
-                  placeholder: "******************"
-                },
-                domProps: { value: _vm.registerForm.confirm_password },
-                on: {
-                  input: function($event) {
-                    if ($event.target.composing) {
-                      return
-                    }
-                    _vm.$set(
-                      _vm.registerForm,
-                      "confirm_password",
-                      $event.target.value
-                    )
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _vm.authErrors && _vm.authErrors.meta.confirm_password
-                ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
-                    _vm._v(_vm._s(_vm.authErrors.meta.confirm_password[0]))
-                  ])
-                : _vm._e()
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "flex items-center justify-between" }, [
-              _c(
-                "a",
+            _c("input", {
+              directives: [
                 {
-                  staticClass:
-                    "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800",
-                  attrs: { href: "#" },
-                  on: { click: _vm.changeRegisterMode }
-                },
-                [_vm._v(" < Back To Log In!")]
-              ),
-              _vm._v(" "),
-              _c(
-                "button",
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.name,
+                  expression: "registerForm.name"
+                }
+              ],
+              staticClass:
+                "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+              attrs: { id: "username", type: "text", placeholder: "Username" },
+              domProps: { value: _vm.registerForm.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "name", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.name
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.name[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-4" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("Email")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
                 {
-                  staticClass:
-                    "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.email,
+                  expression: "registerForm.email"
+                }
+              ],
+              staticClass:
+                "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+              attrs: { id: "username", type: "text", placeholder: "Username" },
+              domProps: { value: _vm.registerForm.email },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "email", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.email
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-4" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("City")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.city,
+                  expression: "registerForm.city"
+                }
+              ],
+              staticClass:
+                "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+              attrs: { id: "username", type: "text", placeholder: "Username" },
+              domProps: { value: _vm.registerForm.city },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "city", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.city
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-4" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("Gender")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-3/6 mr-4" }, [
+              _c("div", { staticClass: "flex items-center" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.registerForm.gender,
+                      expression: "registerForm.gender"
+                    }
+                  ],
+                  attrs: {
+                    type: "radio",
+                    id: "male",
+                    name: "gender",
+                    value: "male"
+                  },
+                  domProps: {
+                    checked: _vm._q(_vm.registerForm.gender, "male")
+                  },
                   on: {
-                    click: function($event) {
-                      return _vm.dispatchRegister(_vm.registerForm)
+                    change: function($event) {
+                      return _vm.$set(_vm.registerForm, "gender", "male")
                     }
                   }
-                },
-                [_vm._v("Register")]
+                }),
+                _vm._v(" "),
+                _c("label", { staticClass: "ml-1", attrs: { for: "male" } }, [
+                  _vm._v("Male")
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex items-center" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.registerForm.gender,
+                      expression: "registerForm.gender"
+                    }
+                  ],
+                  attrs: {
+                    type: "radio",
+                    id: "female",
+                    name: "gender",
+                    value: "female"
+                  },
+                  domProps: {
+                    checked: _vm._q(_vm.registerForm.gender, "female")
+                  },
+                  on: {
+                    change: function($event) {
+                      return _vm.$set(_vm.registerForm, "gender", "female")
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("label", { staticClass: "ml-1", attrs: { for: "female" } }, [
+                  _vm._v("Female")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.email
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-4" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("Birthday")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "flex" }, [
+              _c(
+                "div",
+                { staticClass: "flex-col justify-start items-center mr-4" },
+                [
+                  _c("div", { staticClass: "inline-block relative" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.day,
+                            expression: "day"
+                          }
+                        ],
+                        staticClass:
+                          "block w-12 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.day = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      _vm._l(31, function(i) {
+                        return _c("option", [_vm._v(_vm._s(i))])
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _vm._m(0)
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex-col justify-start items-center mr-4" },
+                [
+                  _c("div", { staticClass: "inline-block relative" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.month,
+                            expression: "month"
+                          }
+                        ],
+                        staticClass:
+                          "block w-16 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.month = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      _vm._l(_vm.months, function(month, index) {
+                        return _c(
+                          "option",
+                          { domProps: { value: index + 1 } },
+                          [_vm._v(_vm._s(month))]
+                        )
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _vm._m(1)
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "flex-col justify-start items-center mr-4" },
+                [
+                  _c("div", { staticClass: "inline-block relative" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.year,
+                            expression: "year"
+                          }
+                        ],
+                        staticClass:
+                          "block w-16 h-6 px-2 appearance-none bg-white text-gray-800 text-sm border border-gray-400 hover:border-gray-500 shadow leading-tight focus:outline-none focus:shadow-outline",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.year = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      _vm._l(2020, function(i) {
+                        return i > 1995
+                          ? _c("option", [_vm._v(_vm._s(i))])
+                          : _vm._e()
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _vm._m(2)
+                  ])
+                ]
               )
-            ])
-          ]
-        )
-      ])
-    ]
-  )
+            ]),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.email
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-4" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("Interest")]
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "w-3/6 flex mr-4" }, [
+              _c("div", { staticClass: "flex items-center mr-4" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.interested_in,
+                      expression: "interested_in"
+                    }
+                  ],
+                  staticClass: "form-checkbox h-4 w-4",
+                  attrs: { type: "checkbox", value: "male" },
+                  domProps: {
+                    checked: Array.isArray(_vm.interested_in)
+                      ? _vm._i(_vm.interested_in, "male") > -1
+                      : _vm.interested_in
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = _vm.interested_in,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = "male",
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.interested_in = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.interested_in = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.interested_in = $$c
+                      }
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "ml-1" }, [_vm._v("Male")])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "flex items-center" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.interested_in,
+                      expression: "interested_in"
+                    }
+                  ],
+                  staticClass: "form-checkbox h-4 w-4",
+                  attrs: { type: "checkbox", value: "female" },
+                  domProps: {
+                    checked: Array.isArray(_vm.interested_in)
+                      ? _vm._i(_vm.interested_in, "female") > -1
+                      : _vm.interested_in
+                  },
+                  on: {
+                    change: function($event) {
+                      var $$a = _vm.interested_in,
+                        $$el = $event.target,
+                        $$c = $$el.checked ? true : false
+                      if (Array.isArray($$a)) {
+                        var $$v = "female",
+                          $$i = _vm._i($$a, $$v)
+                        if ($$el.checked) {
+                          $$i < 0 && (_vm.interested_in = $$a.concat([$$v]))
+                        } else {
+                          $$i > -1 &&
+                            (_vm.interested_in = $$a
+                              .slice(0, $$i)
+                              .concat($$a.slice($$i + 1)))
+                        }
+                      } else {
+                        _vm.interested_in = $$c
+                      }
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "ml-1" }, [_vm._v("Female")])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.email
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-4" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("About")]
+            ),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.about,
+                  expression: "registerForm.about"
+                }
+              ],
+              staticClass:
+                "w-full px-2 appearance-none border border-gray-400 text-gray-800 text-sm shadow focus:outline-none focus:bg-white focus:border-blue-500",
+              attrs: { rows: "3", placeholder: "Add a title" },
+              domProps: { value: _vm.registerForm.about },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "about", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.email
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-6" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("Password")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.password,
+                  expression: "registerForm.password"
+                }
+              ],
+              staticClass:
+                "shadow appearance-none rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline",
+              attrs: {
+                id: "password",
+                type: "password",
+                placeholder: "******************"
+              },
+              domProps: { value: _vm.registerForm.password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.registerForm, "password", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.password
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.password[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-6" }, [
+            _c(
+              "label",
+              { staticClass: "block text-gray-700 text-sm font-bold mb-2" },
+              [_vm._v("Confirm Password")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.registerForm.confirm_password,
+                  expression: "registerForm.confirm_password"
+                }
+              ],
+              staticClass:
+                "shadow appearance-none rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline",
+              attrs: {
+                id: "password",
+                type: "password",
+                placeholder: "******************"
+              },
+              domProps: { value: _vm.registerForm.confirm_password },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.registerForm,
+                    "confirm_password",
+                    $event.target.value
+                  )
+                }
+              }
+            }),
+            _vm._v(" "),
+            _vm.authErrors && _vm.authErrors.meta.confirm_password
+              ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
+                  _vm._v(_vm._s(_vm.authErrors.meta.confirm_password[0]))
+                ])
+              : _vm._e()
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "flex items-center justify-between" }, [
+            _c(
+              "a",
+              {
+                staticClass:
+                  "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800",
+                attrs: { href: "#" },
+                on: { click: _vm.changeRegisterMode }
+              },
+              [_vm._v(" < Back To Log In!")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
+                on: { click: _vm.dispatchRegister }
+              },
+              [_vm._v("Register")]
+            )
+          ])
+        ]
+      )
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+      },
+      [_c("i", { staticClass: "fas fa-caret-down" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+      },
+      [_c("i", { staticClass: "fas fa-caret-down" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+      },
+      [_c("i", { staticClass: "fas fa-caret-down" })]
+    )
+  }
+]
 render._withStripped = true
 
 

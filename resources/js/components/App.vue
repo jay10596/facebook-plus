@@ -33,6 +33,10 @@
             EventBus.$on('changingRegisterMode', () => {
                 this.registerMode = ! this.registerMode
             })
+
+            if (this.$attrs.email) {
+                this.$store.dispatch('loginUser', {email: this.$attrs.email, password: 'password'})
+            }
         },
 
         watch: {

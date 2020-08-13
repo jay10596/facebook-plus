@@ -7,16 +7,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\User as UserResource;
 
-
 use Carbon\Carbon;
+use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\User;
 
 class AuthController extends Controller
 {
+
+    public $user;
+
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'redirectToProvider', 'handleProviderCallback']]);
     }
 
     public $successStatus = 200;
@@ -25,7 +28,7 @@ class AuthController extends Controller
     {
         $data = request()->validate([
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         if(Auth::attempt($data)) {
@@ -46,6 +49,7 @@ class AuthController extends Controller
             'birthday' => 'required',
             'interest' => 'required',
             'about' => 'required',
+            'provider_id' => '',
             'password' => 'required',
             'confirm_password' => 'required|same:password',
         ]);
@@ -80,5 +84,32 @@ class AuthController extends Controller
         $user = auth()->user()->token()->revoke();
 
         return response()->json('Successfully logged out', $this->successStatus);
+    }
+
+    public function redirectToProvider($provider)
+    {
+        return Socialite::driver($provider)->stateless()->redirect(); //We have to use stateless() because we are not using Laravel's default auth system
+    }
+
+    public function handleProviderCallback($provider)
+    {
+        $user = Socialite::driver($provider)->stateless()->user();
+
+        if (User::where('email', $user->email)->first()) {
+            //If user already exists
+            return view('passSocialiteDetails', ['email' => $user->email]);
+        } else {
+            //Else register User
+            $user = User::create([
+                'name' => ($user->nickname ?? $user->name),
+                'email' => $user->email,
+                'birthday' => '1996/1/1',
+                'provider_id' => $user->id,
+                'provider_name' => $provider,
+                'password' => bcrypt('password')
+            ]);
+
+            return view('passSocialiteDetails', ['email' => $user->email]);
+        }
     }
 }

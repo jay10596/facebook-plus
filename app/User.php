@@ -20,7 +20,7 @@ class User extends Authenticatable
 
 
     protected $fillable = [
-        'name', 'email', 'city', 'gender', 'birthday', 'interest', 'about', 'password',
+        'name', 'email', 'city', 'gender', 'birthday', 'interest', 'about', 'provider_id', 'provider_name', 'password',
     ];
 
     protected $dates = ['birthday'];

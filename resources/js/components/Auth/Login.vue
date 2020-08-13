@@ -20,10 +20,15 @@
 
                 <p v-if="authErrors && authErrors.meta.unauthorised" class="mb-4 text-red-500 text-xs italic">{{authErrors.meta.unauthorised}}</p>
 
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between mb-4">
                     <button @click="dispatchLogin(loginForm)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none">Log In</button>
 
                     <a @click="changeRegisterMode" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">Click Here To Register!</a>
+                </div>
+
+                <div class="flex items-center justify-end text-xl">
+                    <a href="api/login/github" ><i class="fab fa-github mx-2"></i></a>
+                    <a href="api/login/google" ><i class="fab fa-google ml-2 text-green-600"></i></a>
                 </div>
             </form>
         </div>
@@ -35,6 +40,8 @@
 
     export default {
         name: "Login",
+
+        props: ['title'],
 
         data() {
             return {
@@ -58,7 +65,8 @@
 
             changeRegisterMode() {
                 EventBus.$emit('changingRegisterMode')
-            }
+            },
+
         }
     }
 </script>
