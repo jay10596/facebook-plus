@@ -31689,7 +31689,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm.authErrors && _vm.authErrors.meta.email
+            _vm.authErrors && _vm.authErrors.meta.gender
               ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
                   _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
                 ])
@@ -31846,7 +31846,7 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm.authErrors && _vm.authErrors.meta.email
+            _vm.authErrors && _vm.authErrors.meta.birthday
               ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
                   _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
                 ])
@@ -31948,7 +31948,7 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm.authErrors && _vm.authErrors.meta.email
+            _vm.authErrors && _vm.authErrors.meta.interest
               ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
                   _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
                 ])
@@ -31985,7 +31985,7 @@ var render = function() {
               }
             }),
             _vm._v(" "),
-            _vm.authErrors && _vm.authErrors.meta.email
+            _vm.authErrors && _vm.authErrors.meta.about
               ? _c("p", { staticClass: "text-red-500 text-xs italic" }, [
                   _vm._v(_vm._s(_vm.authErrors.meta.email[0]))
                 ])

@@ -7,6 +7,8 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 use Carbon\Carbon;
+use Faker\Generator as Faker;
+
 
 use App\User;
 
@@ -19,9 +21,9 @@ class FeatureTest extends TestCase
     /** @test */
     public function all_birthdays_can_be_filtered()
     {
-        $user1 = factory(User::class)->create(['birthday' => '1996/08/11']);
-        $user2 = factory(User::class)->create(['birthday' => '1996/08/14']);
-        $user3 = factory(User::class)->create(['birthday' => '1996/08/25']);
+        $user1 = factory(User::class)->create(['birthday' => Carbon::today()]);
+        $user2 = factory(User::class)->create(['birthday' => Carbon::tomorrow()]);
+        $user3 = factory(User::class)->create(['birthday' => Carbon::now()->endOfMonth()]);
 
         $this->assertCount(3, User::all());
 

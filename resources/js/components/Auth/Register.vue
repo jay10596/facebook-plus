@@ -41,7 +41,7 @@
                         </div>
                     </div>
 
-                    <p v-if="authErrors && authErrors.meta.email" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
+                    <p v-if="authErrors && authErrors.meta.gender" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
                 </div>
 
                 <div class="mb-4">
@@ -85,7 +85,7 @@
                         </div>
                     </div>
 
-                    <p v-if="authErrors && authErrors.meta.email" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
+                    <p v-if="authErrors && authErrors.meta.birthday" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
                 </div>
 
                 <div class="mb-4">
@@ -103,7 +103,7 @@
                         </div>
                     </div>
 
-                    <p v-if="authErrors && authErrors.meta.email" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
+                    <p v-if="authErrors && authErrors.meta.interest" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
                 </div>
 
                 <div class="mb-4">
@@ -111,7 +111,7 @@
 
                     <textarea v-model="registerForm.about" rows="3" class="w-full px-2 appearance-none border border-gray-400 text-gray-800 text-sm shadow focus:outline-none focus:bg-white focus:border-blue-500" placeholder="Add a title"></textarea>
 
-                    <p v-if="authErrors && authErrors.meta.email" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
+                    <p v-if="authErrors && authErrors.meta.about" class="text-red-500 text-xs italic">{{authErrors.meta.email[0]}}</p>
                 </div>
 
                 <div class="mb-6">
