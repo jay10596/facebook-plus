@@ -14,7 +14,8 @@ class Post extends JsonResource
 {
     public function toArray($request)
     {
-        $sharedPost =  \App\Post::find($this->repost_id);
+        $shared_post_id = \App\Post::find($this->repost_id);
+        $shared_post_count =  \App\Post::where('repost_id', $this->id)->count();
         $friend =  User::find($this->friend_id);
 
         return [
@@ -30,7 +31,8 @@ class Post extends JsonResource
             'pictures' => new PictureCollection($this->pictures),
 
             //PostResource inside PostResource
-            'shared_post' => new PostResource($sharedPost),
+            'shared_post' => new PostResource($shared_post_id),
+            'shared_count' => $shared_post_count,
 
             //Friend_id to check on which friend's profile auth user posted
             'posted_on' => new UserResource($friend),

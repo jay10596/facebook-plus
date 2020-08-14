@@ -69,7 +69,7 @@
             <div class="flex">
                 <p class="mr-4">{{post.comments.comment_count}} Comments</p>
 
-                <p class="ml-4">4 Shares</p>
+                <p class="ml-4">{{post.shared_count}} Shares</p>
             </div>
         </div>
 
@@ -84,7 +84,7 @@
         <div v-if="shareMode" class="w-screen h-screen bg-black bg-opacity-25 absolute z-0 left-0 top-0 right-0 bottom-0"></div>
 
         <div v-if="shareMode" class="absolute inset-0 flex justify-center items-center">
-            <ShareCard :post="post" />
+            <ShareCard :post="post" :post_index="$vnode.key" />
         </div>
 
         <div v-if="commentMode">

@@ -76,12 +76,9 @@ const actions = {
             .catch(err => commit('setPostErrors', err))
     },
 
-    sharePost({commit, state}, repost_id) {
-        axios.post('/api/share-post', {body: state.body, repost_id: repost_id})
-            .then(res => {
-                commit('pushPost', res.data)
-                commit('setPostBody', '')
-            })
+    sharePost({commit, state}, data) {
+        axios.post('/api/share-post', {body: data.body, repost_id: data.repost_id})
+            .then(res => commit('pushSharedPost', {newPost: res.data, repost_index: data.repost_index}))
             .catch(err => commit('setPostErrors', err))
     },
 };
@@ -117,6 +114,11 @@ const mutations = {
 
     pushLikes(state, data) {
         state.posts[data.index].likes = data.likes
+    },
+
+    pushSharedPost(state, data) {
+        state.posts.unshift(data.newPost.data)
+        state.posts[data.repost_index + 1].shared_count++ //+1 because the index of all posts will change once a new post is added
     },
 };
 

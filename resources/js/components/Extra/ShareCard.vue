@@ -28,7 +28,7 @@
         </div>
 
         <div class="flex justify-end items-center bg-gray-200 px-4 text-sm">
-            <button @click="dispatchSharePost(post.id)" class="px-2 py-1 m-2 bg-blue-700 text-white font-semibold rounded shadow-lg">Share Post</button>
+            <button @click="dispatchSharePost(body, post.id, post_index)" class="px-2 py-1 m-2 bg-blue-700 text-white font-semibold rounded shadow-lg">Share Post</button>
 
             <button @click="changeShareMode" class="px-2 py-1 m-2 bg-gray-200 text-gray-800 font-semibold rounded border border-gray-500 shadow-lg">Cancel</button>
         </div>
@@ -36,22 +36,14 @@
 </template>
 
 <script>
-    import _ from "lodash";
-
     export default {
         name: "ShareCard",
 
-        props: ['post'],
+        props: ['post', 'post_index'],
 
-        computed: {
-            body: {
-                get() {
-                    return this.$store.getters.body;
-                },
-                //_.debounce (function is to make sure the form is not updated after every character that user types.
-                set: _.debounce(function (body) {
-                    return this.$store.commit('setPostBody', body);
-                }, 1000)
+        data() {
+            return {
+                body: ''
             }
         },
 
@@ -60,10 +52,12 @@
                 EventBus.$emit('changingShareMode')
             },
 
-            dispatchSharePost(repost_id) {
-                this.$store.dispatch('sharePost', repost_id)
+            dispatchSharePost(body, repost_id, repost_index) {
+                this.$store.dispatch('sharePost', {body, repost_id, repost_index})
 
                 this.changeShareMode()
+
+                this.body = ''
             },
         }
 

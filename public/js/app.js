@@ -7650,8 +7650,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -7689,28 +7687,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ShareCard",
-  props: ['post'],
-  computed: {
-    body: {
-      get: function get() {
-        return this.$store.getters.body;
-      },
-      //_.debounce (function is to make sure the form is not updated after every character that user types.
-      set: lodash__WEBPACK_IMPORTED_MODULE_0___default.a.debounce(function (body) {
-        return this.$store.commit('setPostBody', body);
-      }, 1000)
-    }
+  props: ['post', 'post_index'],
+  data: function data() {
+    return {
+      body: ''
+    };
   },
   methods: {
     changeShareMode: function changeShareMode() {
       EventBus.$emit('changingShareMode');
     },
-    dispatchSharePost: function dispatchSharePost(repost_id) {
-      this.$store.dispatch('sharePost', repost_id);
+    dispatchSharePost: function dispatchSharePost(body, repost_id, repost_index) {
+      this.$store.dispatch('sharePost', {
+        body: body,
+        repost_id: repost_id,
+        repost_index: repost_index
+      });
       this.changeShareMode();
+      this.body = '';
     }
   }
 });
@@ -33500,7 +33496,9 @@ var render = function() {
             _vm._v(_vm._s(_vm.post.comments.comment_count) + " Comments")
           ]),
           _vm._v(" "),
-          _c("p", { staticClass: "ml-4" }, [_vm._v("4 Shares")])
+          _c("p", { staticClass: "ml-4" }, [
+            _vm._v(_vm._s(_vm.post.shared_count) + " Shares")
+          ])
         ])
       ]
     ),
@@ -33569,7 +33567,11 @@ var render = function() {
       ? _c(
           "div",
           { staticClass: "absolute inset-0 flex justify-center items-center" },
-          [_c("ShareCard", { attrs: { post: _vm.post } })],
+          [
+            _c("ShareCard", {
+              attrs: { post: _vm.post, post_index: _vm.$vnode.key }
+            })
+          ],
           1
         )
       : _vm._e(),
@@ -33717,7 +33719,11 @@ var render = function() {
               "px-2 py-1 m-2 bg-blue-700 text-white font-semibold rounded shadow-lg",
             on: {
               click: function($event) {
-                return _vm.dispatchSharePost(_vm.post.id)
+                return _vm.dispatchSharePost(
+                  _vm.body,
+                  _vm.post.id,
+                  _vm.post_index
+                )
               }
             }
           },
@@ -54997,15 +55003,17 @@ var actions = {
       return commit('setPostErrors', err);
     });
   },
-  sharePost: function sharePost(_ref7, repost_id) {
+  sharePost: function sharePost(_ref7, data) {
     var commit = _ref7.commit,
         state = _ref7.state;
     axios.post('/api/share-post', {
-      body: state.body,
-      repost_id: repost_id
+      body: data.body,
+      repost_id: data.repost_id
     }).then(function (res) {
-      commit('pushPost', res.data);
-      commit('setPostBody', '');
+      return commit('pushSharedPost', {
+        newPost: res.data,
+        repost_index: data.repost_index
+      });
     })["catch"](function (err) {
       return commit('setPostErrors', err);
     });
@@ -55035,6 +55043,10 @@ var mutations = {
   },
   pushLikes: function pushLikes(state, data) {
     state.posts[data.index].likes = data.likes;
+  },
+  pushSharedPost: function pushSharedPost(state, data) {
+    state.posts.unshift(data.newPost.data);
+    state.posts[data.repost_index + 1].shared_count++; //+1 because the index of all posts will change once a new post is added
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
