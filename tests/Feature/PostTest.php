@@ -51,7 +51,7 @@ class PostTest extends TestCase
 
     /** @test */
     //actingAs is another way to login if you don't want pass the token
-    public function auth_user_can_fetch_all_posts_of_his_friends()
+    public function auth_user_can_fetch_all_posts_including_his_friends()
     {
         $this->actingAs($user1 = factory(User::class)->create(), 'api'); //It just logs in the user
 
@@ -82,6 +82,9 @@ class PostTest extends TestCase
 
                     'pictures' => [],
 
+                    'shared_post' => null,
+                    'shared_count' => 0,
+
                     'posted_on' => null,
 
                     'posted_by' => [
@@ -105,6 +108,7 @@ class PostTest extends TestCase
                     'pictures' => [],
 
                     'shared_post' => null,
+                    'shared_count' => 0,
 
                     'posted_on' => null,
 
@@ -174,6 +178,7 @@ class PostTest extends TestCase
                 'pictures' => [],
 
                 'shared_post' => null,
+                'shared_count' => 0,
 
                 'posted_on' => null,
 
@@ -356,6 +361,7 @@ class PostTest extends TestCase
                 'pictures' => [],
 
                 'shared_post' => null,
+                'shared_count' => 0,
 
                 'posted_on' => null,
 
@@ -421,6 +427,7 @@ class PostTest extends TestCase
                 ],
 
                 'shared_post' => null,
+                'shared_count' => 0,
 
                 'posted_on' => null,
 
@@ -449,80 +456,6 @@ class PostTest extends TestCase
         $posts = Post::all();
 
         $this->assertCount(0, $posts);
-    }
-
-    /** @test */
-    public function auth_user_can_share_post()
-    {
-        $this->actingAs($user = factory(User::class)->create(), 'api'); //It just logs in the user
-
-        $post = factory(Post::class)->create(['user_id' => $user->id]);
-
-        $response = $this->post('/api/share-post', [
-            'body' => 'A new body for shared post',
-            'repost_id' => $post->id,
-            'user_id' => $user->id
-        ]);
-
-        $response->assertStatus(201);
-
-        $posts = Post::all();
-        $post1 = $posts[0]; //$post which is created using factory above
-        $post2 = $posts[1]; //Recently created shared post
-
-        $this->assertCount(2, $posts);
-
-        $response->assertJson([
-            'data' => [
-                'id' => $post2->id,
-                'body' => 'A new body for shared post',
-                'user_id' => $post2->user_id,
-                'created_at' => $post2->created_at->diffForHumans(),
-
-                'comments' => [],
-
-                'likes' => [],
-
-                'pictures' => [],
-
-                'shared_post' => [
-                    'id' => $post1->id,
-                    'body' => $post1->body,
-                    'user_id' => $post1->user_id,
-                    'created_at' => $post1->created_at->diffForHumans(),
-
-                    'comments' => [],
-
-                    'likes' => [],
-
-                    'pictures' => [
-                        'data' => [],
-
-                        'picture_count' => 0,
-
-                        'links' => [
-                            'self' => '/posts'
-                        ]
-                    ],
-
-                    'posted_on' => null,
-
-                    'posted_by' => [
-                        'id' => $user->id,
-                        'name' => $user->name,
-                        'email' => $user->email,
-                    ]
-                ],
-
-                'posted_by' => [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
-                ],
-
-                'path' => $post2->path
-            ]
-        ]);
     }
 
     /** @test */
@@ -595,6 +528,7 @@ class PostTest extends TestCase
                     'pictures' => [],
 
                     'shared_post' => null,
+                    'shared_count' => 0,
 
                     'posted_on' => null,
 
@@ -611,6 +545,170 @@ class PostTest extends TestCase
                 'self' => '/posts',
             ],
         ]);
+    }
+
+    /** @test */
+    public function auth_user_can_share_post()
+    {
+        $this->actingAs($user = factory(User::class)->create(), 'api'); //It just logs in the user
+
+        $post = factory(Post::class)->create(['user_id' => $user->id]);
+
+        $response = $this->post('/api/share-post', [
+            'body' => 'A new body for shared post',
+            'repost_id' => $post->id,
+            'user_id' => $user->id
+        ]);
+
+        $response->assertStatus(201);
+
+        $posts = Post::all();
+        $post1 = $posts[0]; //$post which is created using factory above
+        $post2 = $posts[1]; //Recently created shared post
+
+        $this->assertCount(2, $posts);
+
+        $response->assertJson([
+            'data' => [
+                'id' => $post2->id,
+                'body' => 'A new body for shared post',
+                'user_id' => $post2->user_id,
+                'created_at' => $post2->created_at->diffForHumans(),
+
+                'comments' => [],
+
+                'likes' => [],
+
+                'pictures' => [],
+
+                'shared_post' => [
+                    'id' => $post1->id,
+                    'body' => $post1->body,
+                    'user_id' => $post1->user_id,
+                    'created_at' => $post1->created_at->diffForHumans(),
+
+                    'comments' => [],
+
+                    'likes' => [],
+
+                    'pictures' => [
+                        'data' => [],
+
+                        'picture_count' => 0,
+
+                        'links' => [
+                            'self' => '/posts'
+                        ]
+                    ],
+
+                    'posted_on' => null,
+
+                    'posted_by' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                    ]
+                ],
+                'shared_count' => 0,
+
+                'posted_on' => null,
+
+                'posted_by' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+
+                'path' => $post2->path
+            ]
+        ]);
+
+        //To check if the original post's shared count in increased on not
+        $this->get('/api/posts')->assertJson([
+        'data' => [
+            [
+                'id' => $post1->id,
+                'body' => $post1->body,
+                'user_id' => $post1->user_id,
+                'created_at' => $post1->created_at->diffForHumans(),
+
+                'comments' => [],
+
+                'likes' => [],
+
+                'pictures' => [],
+
+                'shared_post' => [],
+                'shared_count' => 1,
+
+                'posted_on' => null,
+
+                'posted_by' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+
+                'path' => $post1->path
+            ],
+            [
+                'id' => $post2->id,
+                'body' => $post2->body,
+                'user_id' => $post2->user_id,
+                'created_at' => $post2->created_at->diffForHumans(),
+
+                'comments' => [],
+
+                'likes' => [],
+
+                'pictures' => [],
+
+                'shared_post' => [
+                    'id' => $post1->id,
+                    'body' => $post1->body,
+                    'user_id' => $post1->user_id,
+                    'created_at' => $post1->created_at->diffForHumans(),
+
+                    'comments' => [],
+
+                    'likes' => [],
+
+                    'pictures' => [
+                        'data' => [],
+
+                        'picture_count' => 0,
+
+                        'links' => [
+                            'self' => '/posts'
+                        ]
+                    ],
+
+                    'posted_on' => null,
+
+                    'posted_by' => [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                    ]
+                ],
+                'shared_count' => 0,
+
+                'posted_on' => null,
+
+                'posted_by' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ],
+
+                'path' => $post2->path
+            ],
+        ],
+        'links' => [
+            'self' => '/posts'
+        ]
+    ]);;
+
     }
 
     /** @test */
@@ -645,6 +743,7 @@ class PostTest extends TestCase
                 'pictures' => [],
 
                 'shared_post' => null,
+                'shared_count' => 0,
 
                 'posted_on' => [
                     'id' => $user2->id,

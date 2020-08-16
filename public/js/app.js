@@ -7231,6 +7231,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CommentCard",
   props: ['comment', 'comment_index', 'post_index'],
@@ -32626,179 +32636,202 @@ var render = function() {
             ])
           : _vm._e(),
         _vm._v(" "),
-        _c("div", { staticClass: "relative flex text-xs" }, [
-          _vm.favouriteMode
-            ? _c("div", { staticClass: "absolute " }, [
-                _c(
-                  "div",
+        _c("div", { staticClass: "relative flex justify-between text-xs" }, [
+          _c("div", { staticClass: "flex w-full" }, [
+            _vm.favouriteMode
+              ? _c("div", { staticClass: "absolute" }, [
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "flex justify-center items-center bg-white border shadow-2xl rounded-l-full rounded-r-full text-lg -mt-8"
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "mx-2",
+                          on: {
+                            click: function($event) {
+                              _vm.dispatchFavouriteComment(
+                                _vm.comment.id,
+                                _vm.comment_index,
+                                _vm.comment.post_id,
+                                _vm.post_index,
+                                1
+                              ),
+                                (_vm.favouriteMode = !_vm.favouriteMode)
+                            }
+                          }
+                        },
+                        [_vm._v("❤️")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "mx-2",
+                          on: {
+                            click: function($event) {
+                              _vm.dispatchFavouriteComment(
+                                _vm.comment.id,
+                                _vm.comment_index,
+                                _vm.comment.post_id,
+                                _vm.post_index,
+                                2
+                              ),
+                                (_vm.favouriteMode = !_vm.favouriteMode)
+                            }
+                          }
+                        },
+                        [_vm._v("😝")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "mx-2",
+                          on: {
+                            click: function($event) {
+                              _vm.dispatchFavouriteComment(
+                                _vm.comment.id,
+                                _vm.comment_index,
+                                _vm.comment.post_id,
+                                _vm.post_index,
+                                3
+                              ),
+                                (_vm.favouriteMode = !_vm.favouriteMode)
+                            }
+                          }
+                        },
+                        [_vm._v("😢")]
+                      )
+                    ]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.comment.user_favourited
+              ? _c(
+                  "button",
                   {
                     staticClass:
-                      "flex justify-center items-center bg-white border shadow-2xl rounded-l-full rounded-r-full text-lg -mt-8"
+                      "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
+                    on: {
+                      click: function($event) {
+                        _vm.favouriteMode = !_vm.favouriteMode
+                      }
+                    }
                   },
-                  [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "mx-2",
-                        on: {
-                          click: function($event) {
-                            _vm.dispatchFavouriteComment(
-                              _vm.comment.id,
-                              _vm.comment_index,
-                              _vm.comment.post_id,
-                              _vm.post_index,
-                              1
-                            ),
-                              (_vm.favouriteMode = !_vm.favouriteMode)
-                          }
-                        }
-                      },
-                      [_vm._v("❤️")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "mx-2",
-                        on: {
-                          click: function($event) {
-                            _vm.dispatchFavouriteComment(
-                              _vm.comment.id,
-                              _vm.comment_index,
-                              _vm.comment.post_id,
-                              _vm.post_index,
-                              2
-                            ),
-                              (_vm.favouriteMode = !_vm.favouriteMode)
-                          }
-                        }
-                      },
-                      [_vm._v("😝")]
-                    ),
-                    _vm._v(" "),
-                    _c(
-                      "button",
-                      {
-                        staticClass: "mx-2",
-                        on: {
-                          click: function($event) {
-                            _vm.dispatchFavouriteComment(
-                              _vm.comment.id,
-                              _vm.comment_index,
-                              _vm.comment.post_id,
-                              _vm.post_index,
-                              3
-                            ),
-                              (_vm.favouriteMode = !_vm.favouriteMode)
-                          }
-                        }
-                      },
-                      [_vm._v("😢")]
-                    )
-                  ]
+                  [_vm._v("Like")]
                 )
-              ])
-            : _vm._e(),
-          _vm._v(" "),
-          !_vm.comment.user_favourited
-            ? _c(
-                "button",
-                {
-                  staticClass:
-                    "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
-                  on: {
-                    click: function($event) {
-                      _vm.favouriteMode = !_vm.favouriteMode
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.comment.user_favourited && _vm.comment.favourited_type == 1
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
+                    on: {
+                      click: function($event) {
+                        _vm.favouriteMode = !_vm.favouriteMode
+                      }
                     }
-                  }
-                },
-                [_vm._v("Like")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.comment.user_favourited && _vm.comment.favourited_type == 1
-            ? _c(
-                "button",
-                {
-                  staticClass:
-                    "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
-                  on: {
-                    click: function($event) {
-                      _vm.favouriteMode = !_vm.favouriteMode
+                  },
+                  [_vm._v("❤")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.comment.user_favourited && _vm.comment.favourited_type == 2
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
+                    on: {
+                      click: function($event) {
+                        _vm.favouriteMode = !_vm.favouriteMode
+                      }
                     }
-                  }
-                },
-                [_vm._v("❤")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.comment.user_favourited && _vm.comment.favourited_type == 2
-            ? _c(
-                "button",
-                {
-                  staticClass:
-                    "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
-                  on: {
-                    click: function($event) {
-                      _vm.favouriteMode = !_vm.favouriteMode
+                  },
+                  [_vm._v("😝")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.comment.user_favourited && _vm.comment.favourited_type == 3
+              ? _c(
+                  "button",
+                  {
+                    staticClass:
+                      "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
+                    on: {
+                      click: function($event) {
+                        _vm.favouriteMode = !_vm.favouriteMode
+                      }
                     }
+                  },
+                  [_vm._v("😢")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
+                on: {
+                  click: function($event) {
+                    _vm.commentEditMode = !_vm.commentEditMode
                   }
-                },
-                [_vm._v("😝")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _vm.comment.user_favourited && _vm.comment.favourited_type == 3
-            ? _c(
-                "button",
-                {
-                  staticClass:
-                    "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
-                  on: {
-                    click: function($event) {
-                      _vm.favouriteMode = !_vm.favouriteMode
-                    }
-                  }
-                },
-                [_vm._v("😢")]
-              )
-            : _vm._e(),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass:
-                "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
-              on: {
-                click: function($event) {
-                  _vm.commentEditMode = !_vm.commentEditMode
                 }
-              }
-            },
-            [_vm._v("Edit")]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass:
-                "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
-              on: {
-                click: function($event) {
-                  return _vm.dispatchDeleteComment(
-                    _vm.comment.id,
-                    _vm.comment_index,
-                    _vm.comment.post_id,
-                    _vm.post_index
-                  )
+              },
+              [_vm._v("Edit")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass:
+                  "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
+                on: {
+                  click: function($event) {
+                    return _vm.dispatchDeleteComment(
+                      _vm.comment.id,
+                      _vm.comment_index,
+                      _vm.comment.post_id,
+                      _vm.post_index
+                    )
+                  }
                 }
-              }
-            },
-            [_vm._v("Delete")]
-          ),
+              },
+              [_vm._v("Delete")]
+            ),
+            _vm._v(" "),
+            _c("p", { staticClass: "ml-4 text-xs" }, [
+              _vm._v(_vm._s(_vm.comment.updated_at))
+            ])
+          ]),
           _vm._v(" "),
-          _c("p", { staticClass: "ml-4 text-xs" }, [
-            _vm._v(_vm._s(_vm.comment.updated_at))
+          _c("div", [
+            _c(
+              "div",
+              {
+                staticClass:
+                  "flex justify-center items-center bg-white border shadow-2xl rounded-l-full rounded-r-full text-sm -mt-4 px-1"
+              },
+              [
+                _c("p", [_vm._v("❤️")]),
+                _vm._v(" "),
+                _c("p", [_vm._v("😝")]),
+                _vm._v(" "),
+                _c("p", [_vm._v("😢")]),
+                _vm._v(" "),
+                _c("p", { staticClass: "ml-2 font-medium text-gray-600" }, [
+                  _vm._v(_vm._s(_vm.comment.favourites.favourite_count))
+                ])
+              ]
+            )
           ])
         ])
       ])

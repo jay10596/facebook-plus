@@ -24,26 +24,36 @@
                     <img :src="'/storage/' + comment.gif" class="ml-2 p-2">
                 </div>
 
-                <div class="relative flex text-xs">
-                    <div v-if="favouriteMode" class="absolute ">
-                        <div class="flex justify-center items-center bg-white border shadow-2xl rounded-l-full rounded-r-full text-lg -mt-8">
-                            <button @click="dispatchFavouriteComment(comment.id, comment_index, comment.post_id, post_index, 1), favouriteMode = ! favouriteMode" class="mx-2">❤️</button>
-                            <button @click="dispatchFavouriteComment(comment.id, comment_index, comment.post_id, post_index, 2), favouriteMode = ! favouriteMode" class="mx-2">😝</button>
-                            <button @click="dispatchFavouriteComment(comment.id, comment_index, comment.post_id, post_index, 3), favouriteMode = ! favouriteMode" class="mx-2">😢</button>
+                <div class="relative flex justify-between text-xs">
+                    <div class="flex w-full">
+                        <div v-if="favouriteMode" class="absolute">
+                            <div class="flex justify-center items-center bg-white border shadow-2xl rounded-l-full rounded-r-full text-lg -mt-8">
+                                <button @click="dispatchFavouriteComment(comment.id, comment_index, comment.post_id, post_index, 1), favouriteMode = ! favouriteMode" class="mx-2">❤️</button>
+                                <button @click="dispatchFavouriteComment(comment.id, comment_index, comment.post_id, post_index, 2), favouriteMode = ! favouriteMode" class="mx-2">😝</button>
+                                <button @click="dispatchFavouriteComment(comment.id, comment_index, comment.post_id, post_index, 3), favouriteMode = ! favouriteMode" class="mx-2">😢</button>
+                            </div>
                         </div>
+
+                        <button v-if="! comment.user_favourited" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Like</button>
+                        <button v-if="comment.user_favourited && comment.favourited_type == 1" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">❤</button>
+                        <button v-if="comment.user_favourited && comment.favourited_type == 2" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">😝</button>
+                        <button v-if="comment.user_favourited && comment.favourited_type == 3" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">😢</button>
+
+                        <button @click="commentEditMode = ! commentEditMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Edit</button>
+
+                        <button @click="dispatchDeleteComment(comment.id, comment_index, comment.post_id, post_index)" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Delete</button>
+
+                        <p class="ml-4 text-xs">{{comment.updated_at}}</p>
                     </div>
 
-                    <button v-if="! comment.user_favourited" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Like</button>
-                    <button v-if="comment.user_favourited && comment.favourited_type == 1" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">❤</button>
-                    <button v-if="comment.user_favourited && comment.favourited_type == 2" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">😝</button>
-                    <button v-if="comment.user_favourited && comment.favourited_type == 3" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">😢</button>
-
-
-                    <button @click="commentEditMode = ! commentEditMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Edit</button>
-
-                    <button @click="dispatchDeleteComment(comment.id, comment_index, comment.post_id, post_index)" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Delete</button>
-
-                    <p class="ml-4 text-xs">{{comment.updated_at}}</p>
+                    <div>
+                        <div class="flex justify-center items-center bg-white border shadow-2xl rounded-l-full rounded-r-full text-sm -mt-4 px-1">
+                            <p>❤️</p>
+                            <p>😝</p>
+                            <p>😢</p>
+                            <p class="ml-2 font-medium text-gray-600">{{comment.favourites.favourite_count}}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
