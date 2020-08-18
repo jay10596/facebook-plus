@@ -46,4 +46,9 @@ Route::middleware('auth:api')->group(function () {
     //FEATURES
     Route::post('/filter-birthdays', 'FeatureController@filterBirthdays');
     Route::post('/wish-birthday', 'FeatureController@wishBirthday');
+
+    //NOTIFICATIONS
+    Route::post('/notifications', 'NotificationController@index');
+    Route::post('/mark-as-read', 'NotificationController@markAsRead');
+    Route::post('/hide-friend-buttons', 'NotificationController@hideFriendButtons');
 });

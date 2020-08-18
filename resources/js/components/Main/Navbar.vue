@@ -1,7 +1,7 @@
 <template>
-    <div class="flex items-center bg-white h-12 border-b border-gray-400 shadow-sm">
+    <div class="flex justify-between items-center bg-blue-700 h-12 border-b border-gray-400 shadow-sm">
         <div class="flex justify-start items-center">
-            <router-link to="/" class="ml-12 mr-2 text-4xl text-blue-600">
+            <router-link to="/" class="ml-12 mr-2 text-4xl text-white">
                 <i class="fab fa-facebook"></i>
             </router-link>
 
@@ -13,7 +13,7 @@
             </div>
         </div>
 
-        <div class="w-full flex justify-center items-center h-full">
+        <div class="w-full flex justify-center items-center h-full text-white">
             <router-link to="/" :class="homeButtonClass">
                 <i class="fas fa-home"></i>
             </router-link>
@@ -22,43 +22,61 @@
                 <img class="w-8 h-8 object-cover rounded-full" :src="'/storage/' + authUser.profile_image.path" alt="Profile Image">
             </router-link>
 
-            <router-link to="/" class="flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-500 hover:text-blue-500">
+            <router-link to="/" class="flex items-center h-full px-6 text-2xl text-white border-b-2 border-blue-700 hover:border-white">
                 <i class="fab fa-facebook-messenger"></i>
             </router-link>
         </div>
 
-        <div class="w-1/3 flex justify-end mr-12">
-            <router-link to="/" class="text-2xl">
-                <i class="fas fa-cog"></i>
-            </router-link>
+        <div class="w-1/3 relative flex justify-end mr-8 text-2xl">
+            <button @click="notificationMode = ! notificationMode" class="hover:text-white focus:outline-none focus:text-white"><i class="fas fa-bell mx-6"></i></button>
+
+            <div v-if="notificationMode" @click="notificationMode = false" class="fixed right-0 left-0 top-0 bottom-0"></div>
+
+            <div v-if="notificationMode" class="absolute right-0 w-96 mr-20 mt-10 shadow-2xl bg-white border-b border-gray-400">
+                <NotificationBlock />
+            </div>
+
+            <button class="hover:text-white focus:outline-none"><i class="fas fa-cog mx-6"></i></button>
         </div>
     </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
+    import NotificationBlock from "../Extra/NotificationBlock";
 
     export default {
         name: "Navbar",
 
+        components: {NotificationBlock},
+
         computed: {
             ...mapGetters({
                 authUser: 'authUser',
-                title: 'title'
+                title: 'title',
             }),
+
+            notificationMode: {
+                get() {
+                    return this.$store.getters.notificationMode;
+                },
+                set(notificationMode) {
+                    return this.$store.commit('setNotificationMode', notificationMode);
+                }
+            },
 
             homeButtonClass() {
                 if(this.title == 'NewsFeed | Facebook') {
-                    return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-600 text-blue-600'
+                    return 'flex items-center h-full px-6 text-white text-2xl border-b-2 border-white'
                 }
-                return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-600 hover:text-blue-600'
+                return 'flex items-center h-full px-6 text-2xl text-white border-b-2 border-blue-700 hover:border-white'
             },
 
             profileButtonClass() {
                 if(this.title == 'Profile | Facebook') {
-                    return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-600'
+                    return 'hover:text-white focus:outline-none'
                 }
-                return 'flex items-center h-full px-6 text-2xl border-b-2 border-white hover:border-blue-600'
+                return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-700 hover:border-white'
             }
         }
     }

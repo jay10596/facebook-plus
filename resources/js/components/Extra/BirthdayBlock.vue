@@ -16,7 +16,7 @@
     import BirthdayCard from "./BirthdayCard";
 
     export default {
-        name: "BirthdayFilter",
+        name: "BirthdayBlock",
 
         components: {BirthdayCard},
 

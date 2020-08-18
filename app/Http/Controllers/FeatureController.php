@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\Post as PostResource;
+use App\Notifications\BirthdayNotification;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
 
@@ -30,6 +31,11 @@ class FeatureController extends Controller
 
         //This month's Birthdays - Method 3 (Don't display today and this week's birthdays)
         $month = User::whereRaw('birthday LIKE "%-'. now()->format('m') .'-%"' )->where(User::raw("(DATE_FORMAT(birthday, '%d'))"), ">",  now()->format('d') + 7)->get(); //Or use ->paginate(5);
+
+        /*
+            //Send notification
+            auth()->user()->notify(new BirthdayNotification($today)); //Won't implement because this function is called in the create() of vue which is why it will give a new notification everytime the page is refreshed. I will have to create a new function and notify the user there.
+        */
 
         return [
             'today' => UserResource::collection($today),

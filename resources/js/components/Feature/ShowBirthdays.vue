@@ -1,9 +1,9 @@
 <template>
     <div class="flex">
         <div class="flex flex-col w-8/12 items-center">
-            <BirthdayFilter :birthdays="birthdays.today" title="Today's Birthdays" :current_date="current_date"  />
-            <BirthdayFilter :birthdays="birthdays.week" title="This Week's Birthdays" />
-            <BirthdayFilter :birthdays="birthdays.month" title="This Month's Birthdays" />
+            <BirthdayBlock :birthdays="birthdays.today" title="Today's Birthdays" :current_date="current_date"  />
+            <BirthdayBlock :birthdays="birthdays.week" title="This Week's Birthdays" />
+            <BirthdayBlock :birthdays="birthdays.month" title="This Month's Birthdays" />
         </div>
 
         <ShowFeatures />
@@ -13,12 +13,12 @@
 <script>
     import {mapGetters} from "vuex";
     import ShowFeatures from "./ShowFeatures";
-    import BirthdayFilter from "../Extra/BirthdayFilter";
+    import BirthdayBlock from "../Extra/BirthdayBlock";
 
     export default {
         name: "ShowBirthdays",
 
-        components: {BirthdayFilter, ShowFeatures},
+        components: {BirthdayBlock, ShowFeatures},
 
         computed: {
             ...mapGetters({

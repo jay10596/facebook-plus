@@ -40,7 +40,9 @@
         },
 
         created() {
-            this.alreadyWished = localStorage.getItem("alreadyWished").split(",")
+            if(localStorage.getItem("alreadyWished")) {
+                this.alreadyWished = localStorage.getItem("alreadyWished").split(",")
+            }
 
             if (this.alreadyWished.includes(this.birthdayUser.id.toString())) {
                 this.createMode = false

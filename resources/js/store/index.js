@@ -9,6 +9,7 @@ import Items from './modules/items.js'
 import Categories from './modules/categories.js'
 import User from './modules/user.js'
 import Features from './modules/features.js'
+import Notifications from './modules/notifications.js'
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
         Items,
         Categories,
         User,
-        Features
+        Features,
+        Notifications
     }
 });

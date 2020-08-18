@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\CommentCollection;
 use App\Http\Resources\Post as PostResource;
 use App\Http\Requests\CommentRequest;
+use App\Notifications\CommentNotification;
 
 use App\Comment;
 use App\Post;
@@ -34,7 +35,14 @@ class CommentController extends Controller
         */
         $request['user_id'] = auth()->user()->id;
 
-        $post->comments()->create($request->all());
+        $comment = $post->comments()->create($request->all());
+
+        //Send Notifications
+        $user = $post->user;
+
+        if($comment->user_id != $post->user_id) {
+            $user->notify(new CommentNotification($comment));
+        }
 
         return new CommentCollection($post->comments);
     }
