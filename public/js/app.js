@@ -8509,7 +8509,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     profileButtonClass: function profileButtonClass() {
       if (this.title == 'Profile | Facebook') {
-        return 'hover:text-white focus:outline-none';
+        return 'flex items-center h-full px-6 text-2xl border-b-2 hover:text-white focus:outline-none';
       }
 
       return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-700 hover:border-white';
