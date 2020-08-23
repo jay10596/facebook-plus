@@ -33,8 +33,8 @@
         </div>
 
         <div v-if="post.pictures.picture_count != 0" class="flex px-4">
-            <div v-for="picture in post.pictures.data" class="ml-1 mt-2">
-                <img :src="'/storage/' + picture.path" alt="Post Picture">
+            <div v-for="picture in post.pictures.data" class="w-full ml-1 mt-2">
+                <img :src="'/storage/' + picture.path" class="w-full" alt="Post Picture">
             </div>
         </div>
 
@@ -67,7 +67,7 @@
             </div>
 
             <div class="flex">
-                <p class="mr-4">{{post.comments.comment_count}} Comments</p>
+                <p class="mr-4">{{post.comments.data.length}} Comments</p>
 
                 <p class="ml-4">{{post.shared_count}} Shares</p>
             </div>
@@ -98,7 +98,6 @@
 </template>
 
 <script>
-    import _ from "lodash";
     import CommentCard from "./CommentCard";
     import CreateComment from "../Comment/CreateComment";
     import ShareCard from "./ShareCard";
@@ -110,17 +109,17 @@
 
         props: ['post'],
 
+        computed: {
+            likeColor() {
+                return this.post.likes.user_liked ? 'w-full text-blue-600 font-medium focus:outline-none' : 'w-full hover:text-blue-700 font-medium focus:outline-none'
+            }
+        },
+
         data() {
             return {
                 commentBody: '',
                 commentMode: false,
                 shareMode: false,
-            }
-        },
-
-        computed: {
-            likeColor() {
-                return this.post.likes.user_liked ? 'w-full text-blue-600 font-medium focus:outline-none' : 'w-full hover:text-blue-700 font-medium focus:outline-none'
             }
         },
 

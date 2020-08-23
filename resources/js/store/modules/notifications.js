@@ -3,7 +3,6 @@ const state = {
     allNotifications: {},
     readNotifications: {},
     unreadNotifications: {},
-    unreadNotificationCount: 0,
     notificationErrors: null
 };
 
@@ -22,10 +21,6 @@ const getters = {
 
     unreadNotifications: state => {
         return state.unreadNotifications;
-    },
-
-    unreadNotificationCount: state => {
-        return state.unreadNotificationCount.length;
     },
 
     notificationErrors: state => {
@@ -68,7 +63,6 @@ const mutations = {
         state.notificationMode = false
         state.unreadNotifications.splice(notification, 1)
         state.readNotifications.push(notification)
-        state.unreadNotificationCount --
     },
 
     setNotificationErrors(state, err) {

@@ -5,12 +5,7 @@
                 <i class="fab fa-facebook"></i>
             </router-link>
 
-            <div class="relative">
-                <div class="absolute mx-2 text-xl text-gray-600">
-                    <i class="fas fa-search"></i>
-                </div>
-                <input type="text" class="w-56 h-8 pl-10 text-sm rounded-full bg-gray-200 focus:outline-none focus:shadow-outline" placeholder="Search...">
-            </div>
+            <SearchBlock />
         </div>
 
         <div class="w-full flex justify-center items-center h-full text-white">
@@ -28,7 +23,10 @@
         </div>
 
         <div class="w-1/3 relative flex justify-end mr-8 text-2xl">
-            <button @click="notificationMode = ! notificationMode" class="hover:text-white focus:outline-none focus:text-white"><i class="fas fa-bell mx-6"></i></button>
+            <button @click="notificationMode = ! notificationMode" class="hover:text-white focus:outline-none focus:text-white">
+                <i class="fas fa-bell mx-6"></i>
+                <div v-if="unreadNotifications.length > 0" class="absolute h-5 w-5 top-0 ml-8 flex items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white"><p>{{unreadNotifications.length}}</p></div>
+            </button>
 
             <div v-if="notificationMode" @click="notificationMode = false" class="fixed right-0 left-0 top-0 bottom-0"></div>
 
@@ -44,16 +42,18 @@
 <script>
     import { mapGetters } from 'vuex';
     import NotificationBlock from "../Extra/NotificationBlock";
+    import SearchBlock from "../Extra/SearchBlock";
 
     export default {
         name: "Navbar",
 
-        components: {NotificationBlock},
+        components: {SearchBlock, NotificationBlock},
 
         computed: {
             ...mapGetters({
                 authUser: 'authUser',
                 title: 'title',
+                unreadNotifications: 'unreadNotifications'
             }),
 
             notificationMode: {
@@ -78,6 +78,10 @@
                 }
                 return 'flex items-center h-full px-6 text-2xl border-b-2 border-blue-700 hover:border-white'
             }
+        },
+
+        created() {//Just to trigger the unreadNotificationCount
+            this.$store.dispatch('fetchAllNotifications')
         }
     }
 </script>

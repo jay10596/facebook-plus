@@ -11,9 +11,11 @@ use App\User;
 
 class UserController extends Controller
 {
-    public function index(User $user)
+    public function index()
     {
+        $users = User::all();
 
+        return UserResource::collection($users);
     }
 
     public function store(Request $request)

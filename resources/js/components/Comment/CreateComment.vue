@@ -1,6 +1,18 @@
 <template>
-    <div class="flex border-t border-gray-400 p-4 py-2">
-        <input v-model='body' type="text" name="comment" placeholder="Add your comment..." class="w-full pl-4 h-8 bg-gray-200 rounded-lg focus:outline-none">
+    <div class="relative flex border-t border-gray-400 p-4 py-2">
+        <input v-model='body' @input="checkTags(body)" type="text" name="comment" placeholder="Add your comment..." class="w-full pl-4 h-8 bg-gray-200 rounded-lg focus:outline-none">
+
+        <div v-if="tagMode" @click="tagMode = false" class="fixed right-0 left-0 top-0 bottom-0"></div>
+
+        <div v-if="tagMode" class="absolute bg-white w-56 mt-8 top-0 text-xs shadow-2xl z-20 border border-gray-300">
+            <div v-for="user in searchResult" :key='user.id'>
+                <button @click="tagUser(user.name), tagMode = false" class="flex w-full items-center p-2 text-gray-800 font-semibold border-b border-gray-200 hover:bg-blue-700 hover:text-white">
+                    <img class="w-8 h-8 object-cover" :src="'/storage/' + user.profile_image.path" alt="Profile Image">
+
+                    <p class="mx-2">{{user.name}}</p>
+                </button>
+            </div>
+        </div>
 
         <button v-if="body" @click="dispatchAddComment(body, post_id, post_index), body = ''"  class="bg-gray-200 ml-2 px-2 py-1 rounded-lg focus:outline-none">Post</button>
 
@@ -12,6 +24,7 @@
 
 <script>
     import Dropzone from 'dropzone';
+    import {mapGetters} from "vuex";
 
     export default {
         name: "CreateComment",
@@ -21,7 +34,9 @@
         data() {
             return {
                 body: '',
-                dropzone: null
+                dropzone: null,
+                tagMode: false,
+                hasTag: false
             }
         },
 
@@ -30,6 +45,10 @@
         },
 
         computed: {
+            ...mapGetters({
+                searchResult: 'searchResult',
+            }),
+
             settings() {
                 return {
                     paramName: 'gif', // field name is image
@@ -72,6 +91,26 @@
         methods: {
             dispatchAddComment(body, post_id, post_index) {
                 this.$store.dispatch('createComment', {body, post_id, post_index})
+            },
+
+            checkTags(body) {
+                if(body.includes('@') && ! this.hasTag) { //Because we are allowing to use @ only once. Only dispatch result if @ doesn't exist at all.
+                    let index = body.indexOf('@')
+                    let searchTerm = body.substring(index + 1, index + 2)
+
+                    this.tagMode = true
+                    this.$store.dispatch('fetchSearchResult', searchTerm)
+                }
+            },
+
+            tagUser(name) { //I can pass body from the top as well but then I will have to creat 2 different buttons for editMode true and false which why this is another way to make <template> code look simple
+                if(this.editMode) {
+                    this.post.body = this.post.body.replace('@', `@${name} `)
+                } else {
+                    this.body = this.body.replace('@', `@${name} `)
+                }
+                this.tagMode = false
+                this.hasTag = true
             }
         }
     }

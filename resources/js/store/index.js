@@ -10,6 +10,7 @@ import Categories from './modules/categories.js'
 import User from './modules/user.js'
 import Features from './modules/features.js'
 import Notifications from './modules/notifications.js'
+import Search from './modules/search.js'
 
 Vue.use(Vuex);
 
@@ -24,6 +25,7 @@ export default new Vuex.Store({
         Categories,
         User,
         Features,
-        Notifications
+        Notifications,
+        Search
     }
 });

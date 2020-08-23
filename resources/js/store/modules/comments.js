@@ -2,13 +2,13 @@ import Posts from './posts'
 
 const state = {
     //Unlike posts, we will pass the body from the vue file as a parameter (Just to do it differently)
-    commentErrors: null,
+    commentErrors: null
 };
 
 const getters = {
     commentErrors: state => {
         return state.commentErrors;
-    },
+    }
 };
 
 const actions = {

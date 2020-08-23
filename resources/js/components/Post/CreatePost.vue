@@ -69,7 +69,7 @@
                 editMode: false,
                 post: '',
                 originalPost: '',
-                dropzone: null
+                dropzone: null,
             }
         },
 
@@ -79,7 +79,7 @@
 
         computed: {
             ...mapGetters({
-                authUser: 'authUser'
+                authUser: 'authUser',
             }),
 
             body: {

@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Laravel\Scout\Searchable;
 
 use App\Post;
 use App\Comment;
@@ -17,7 +18,6 @@ use Carbon\Carbon;
 class User extends Authenticatable
 {
     use Notifiable, HasApiTokens;
-
 
     protected $fillable = [
         'name', 'email', 'city', 'gender', 'birthday', 'interest', 'about', 'provider_id', 'provider_name', 'password',

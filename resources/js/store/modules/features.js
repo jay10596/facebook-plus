@@ -1,6 +1,6 @@
 const state = {
     birthdays: '',
-    birthdayErrors: ''
+    birthdayErrors: '',
 };
 
 const getters = {

@@ -50,11 +50,11 @@
                 posts: 'posts',
                 friendButton: 'friendButton',
                 userErrors: 'userErrors',
-                status: 'status'
+                status: 'status',
             })
         },
 
-        mounted() {
+        created() {
             this.$store.dispatch('fetchUser', this.$route.params.userId)
             this.$store.dispatch('fetchUserPosts', this.$route.params.userId)
         },
@@ -70,6 +70,13 @@
 
             deleteFriendRequest() {
                 this.$store.dispatch('deleteRequest', this.$route.params.userId)
+            }
+        },
+
+        watch:{
+            $route (to, from){
+                this.$store.dispatch('fetchUser', this.$route.params.userId)
+                this.$store.dispatch('fetchUserPosts', this.$route.params.userId)
             }
         }
     }

@@ -51,4 +51,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/notifications', 'NotificationController@index');
     Route::post('/mark-as-read', 'NotificationController@markAsRead');
     Route::post('/hide-friend-buttons', 'NotificationController@hideFriendButtons');
+
+    //SEARCH
+    Route::post('/search', 'SearchController@getUsers');
 });
