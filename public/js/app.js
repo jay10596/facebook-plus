@@ -55794,9 +55794,14 @@ var actions = {
     axios.post('/api/posts/' + data.post_id + '/comments', {
       body: data.body
     }).then(function (res) {
-      return commit('pushComments', {
+      commit('pushComments', {
         comments: res.data,
         post_index: data.post_index
+      });
+      var latest_comment = res.data.data;
+      axios.post('/api/notify-tagged-user', {
+        tagged_user_id: latest_comment[0].tag.taggedUserID,
+        tagged_comment_id: latest_comment[0].id
       });
     })["catch"](function (err) {
       return commit('setCommentErrors', err);
@@ -55808,7 +55813,15 @@ var actions = {
     axios.put('/api/posts/' + data.post_id + '/comments/' + data.comment_id, {
       body: data.comment_body
     }).then(function (res) {
-      return commit('pushComments', res.data);
+      commit('pushComments', {
+        comments: res.data,
+        post_index: data.post_index
+      });
+      var latest_comment = res.data.data;
+      axios.post('/api/notify-tagged-user', {
+        tagged_user_id: latest_comment[0].tag.taggedUserID,
+        tagged_comment_id: latest_comment[0].id
+      });
     })["catch"](function (err) {
       return commit('setPostErrors', err);
     });

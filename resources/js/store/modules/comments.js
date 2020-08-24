@@ -14,13 +14,21 @@ const getters = {
 const actions = {
     createComment({commit, state}, data) {
         axios.post('/api/posts/' + data.post_id + '/comments', {body: data.body})
-            .then(res => commit('pushComments', {comments: res.data, post_index: data.post_index}))
+            .then(res => {
+                commit('pushComments', {comments: res.data, post_index: data.post_index})
+                var latest_comment = res.data.data
+                axios.post('/api/notify-tagged-user', {tagged_user_id: latest_comment[0].tag.taggedUserID, tagged_comment_id: latest_comment[0].id})
+            })
             .catch(err => commit('setCommentErrors', err))
     },
 
     updateComment({commit, state}, data) {
         axios.put('/api/posts/' + data.post_id + '/comments/' + data.comment_id, {body: data.comment_body})
-            .then(res => commit('pushComments', res.data))
+            .then(res => {
+                commit('pushComments', {comments: res.data, post_index: data.post_index})
+                var latest_comment = res.data.data
+                axios.post('/api/notify-tagged-user', {tagged_user_id: latest_comment[0].tag.taggedUserID, tagged_comment_id: latest_comment[0].id})
+            })
             .catch(err => commit('setPostErrors', err))
     },
 
@@ -34,7 +42,7 @@ const actions = {
         axios.post('/api/posts/' + data.post_id + '/comments/' + data.comment_id + '/favourite-unfavourite', {type: data.type})
             .then(res => commit('pushFavourites', {favourites: res.data, post_index: data.post_index, comment_index: data.comment_index}))
             .catch(err => commit('setCommentErrors', err))
-    },
+    }
 };
 
 const mutations = {

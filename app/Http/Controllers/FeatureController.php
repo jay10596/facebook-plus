@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Post as PostResource;
 use App\Notifications\BirthdayNotification;
+use App\Notifications\TagNotification;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
 
 use App\User;
+use App\Comment;
 use Auth;
 
 
@@ -32,9 +34,11 @@ class FeatureController extends Controller
         //This month's Birthdays - Method 3 (Don't display today and this week's birthdays)
         $month = User::whereRaw('birthday LIKE "%-'. now()->format('m') .'-%"' )->where(User::raw("(DATE_FORMAT(birthday, '%d'))"), ">",  now()->format('d') + 7)->get(); //Or use ->paginate(5);
 
+        //Won't implement because this function is called in the create() of vue which is why it will give a new notification everytime the page is refreshed. I will have to create a new function and notify the user there.
+        //Do it like notifyTaggedUser
         /*
             //Send notification
-            auth()->user()->notify(new BirthdayNotification($today)); //Won't implement because this function is called in the create() of vue which is why it will give a new notification everytime the page is refreshed. I will have to create a new function and notify the user there.
+            auth()->user()->notify(new BirthdayNotification($today));
         */
 
         return [
@@ -53,5 +57,17 @@ class FeatureController extends Controller
         ]);
 
         return (new PostResource($post))->response()->setStatusCode(201);
+    }
+
+    //Send notification
+    public function notifyTaggedUser(Request $request) {
+        $tagged_user_id = $request->tagged_user_id;
+        $tagged_comment_id = $request->tagged_comment_id;
+
+        if($tagged_user_id != null && $tagged_user_id != Auth::user()->id) {
+            $tagged_user = User::find($tagged_user_id);
+            $tagged_comment = Comment::find($tagged_comment_id);
+            $tagged_user->notify(new TagNotification($tagged_comment));
+        }
     }
 }
