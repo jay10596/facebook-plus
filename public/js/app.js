@@ -7311,7 +7311,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CommentCard",
-  props: ['comment', 'comment_index', 'post_index'],
+  props: ['comment', 'comment_index', 'post', 'post_index'],
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])({
     searchResult: 'searchResult'
   })), {}, {
@@ -7325,13 +7325,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }),
   data: function data() {
     return {
-      orginalCommentBody: this.comment.body,
+      orginalCommentBody: null,
+      originalTaggedUserName: null,
+      originalTaggedUserID: null,
+      originalNewBody: null,
       commentEditMode: false,
       gifMode: false,
       favouriteMode: false,
       tagMode: false,
       hasTag: false
     };
+  },
+  created: function created() {
+    this.orginalCommentBody = this.post.comments.data[0].body;
+    this.originalTaggedUserName = this.post.comments.data[0].taggedUserName;
+    this.originalTaggedUserID = this.post.comments.data[0].taggedUserID;
+    this.originalNewBody = this.post.comments.data[0].newBody;
   },
   methods: {
     dispatchEditComment: function dispatchEditComment(comment_id, comment_index, comment_body, post_id, post_index) {
@@ -7342,6 +7351,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         post_id: post_id,
         post_index: post_index
       });
+
+      if (!this.comment.body.includes('@')) {
+        this.comment.tag.taggedUserName = null;
+        this.comment.tag.taggedUserID = null;
+        this.comment.tag.newBody = null;
+      }
+
+      this.orginalCommentBody = this.comment.body;
     },
     dispatchDeleteComment: function dispatchDeleteComment(comment_id, comment_index, post_id, post_index) {
       this.$store.dispatch('deleteComment', {
@@ -7350,6 +7367,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         post_id: post_id,
         post_index: post_index
       });
+      this.orginalCommentBody = this.post.comments.data[0].body;
     },
     dispatchFavouriteComment: function dispatchFavouriteComment(comment_id, comment_index, post_id, post_index, type) {
       this.$store.dispatch('favouriteUnfavouriteComment', {
@@ -7377,6 +7395,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.comment.tag.newBody = this.comment.body.split(user.name);
       this.tagMode = false;
       this.hasTag = true;
+    },
+    cancelEditComment: function cancelEditComment() {
+      this.commentEditMode = false;
+      this.comment.body = this.orginalCommentBody;
+
+      if (this.comment.tag.taggedUserName != null) {
+        this.comment.tag.taggedUserName = this.originalTaggedUserName;
+        this.comment.tag.taggedUserID = this.originalTaggedUserID;
+        this.comment.tag.newBody = this.originalNewBody;
+      } else {
+        this.comment.tag.taggedUserName = null;
+        this.comment.tag.taggedUserID = null;
+        this.comment.tag.newBody = null;
+      }
+
+      this.hasTag = false;
+    },
+    changeEditMode: function changeEditMode() {
+      this.commentEditMode = !this.commentEditMode;
+      this.orginalCommentBody = this.comment.body;
+      this.originalTaggedUserName = this.comment.tag.taggedUserName;
+      this.originalTaggedUserID = this.comment.tag.taggedUserID;
+      this.originalNewBody = this.comment.tag.newBody;
     }
   }
 });
@@ -33098,8 +33139,7 @@ var render = function() {
                       staticClass: "ml-2 text-gray-700 focus:outline-none",
                       on: {
                         click: function($event) {
-                          ;(_vm.commentEditMode = false),
-                            (_vm.comment.body = _vm.orginalCommentBody)
+                          return _vm.cancelEditComment()
                         }
                       }
                     },
@@ -33263,11 +33303,7 @@ var render = function() {
               {
                 staticClass:
                   "ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none",
-                on: {
-                  click: function($event) {
-                    _vm.commentEditMode = !_vm.commentEditMode
-                  }
-                }
+                on: { click: _vm.changeEditMode }
               },
               [_vm._v("Edit")]
             ),
@@ -34304,6 +34340,7 @@ var render = function() {
                     attrs: {
                       comment: comment,
                       comment_index: index,
+                      post: _vm.post,
                       post_index: _vm.$vnode.key
                     }
                   })

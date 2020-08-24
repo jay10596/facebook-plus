@@ -91,7 +91,7 @@
             <CreateComment :post_id="post.id" :post_index="$vnode.key"></CreateComment>
 
             <div v-for="(comment, index) in post.comments.data">
-                <CommentCard :comment="comment" :comment_index="index" :post_index="$vnode.key" />
+                <CommentCard :comment="comment" :comment_index="index" :post="post" :post_index="$vnode.key" />
             </div>
         </div>
     </div>

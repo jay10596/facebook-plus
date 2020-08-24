@@ -30,7 +30,7 @@
 
                         <button @click="dispatchEditComment(comment.id, comment_index, comment.body, comment.post_id, post_index), commentEditMode = false" class="ml-2 text-gray-700 focus:outline-none"><i class="fas fa-check-circle"></i></button>
 
-                        <button @click="commentEditMode = false, comment.body = orginalCommentBody" class="ml-2 text-gray-700 focus:outline-none"><i class="fas fa-ban"></i></button>
+                        <button @click="cancelEditComment()" class="ml-2 text-gray-700 focus:outline-none"><i class="fas fa-ban"></i></button>
                     </div>
                 </div>
 
@@ -53,7 +53,7 @@
                         <button v-if="comment.user_favourited && comment.favourited_type == 2" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">😝</button>
                         <button v-if="comment.user_favourited && comment.favourited_type == 3" @click="favouriteMode = ! favouriteMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">😢</button>
 
-                        <button @click="commentEditMode = ! commentEditMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Edit</button>
+                        <button @click="changeEditMode" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Edit</button>
 
                         <button @click="dispatchDeleteComment(comment.id, comment_index, comment.post_id, post_index)" class="ml-4 font-medium text-blue-700 hover:font-semibold focus:outline-none">Delete</button>
 
@@ -80,7 +80,7 @@
     export default {
         name: "CommentCard",
 
-        props: ['comment', 'comment_index', 'post_index'],
+        props: ['comment', 'comment_index', 'post', 'post_index'],
 
         computed: {
             ...mapGetters({
@@ -98,22 +98,41 @@
 
         data() {
             return {
-                orginalCommentBody: this.comment.body,
+                orginalCommentBody: null,
+                originalTaggedUserName: null,
+                originalTaggedUserID: null,
+                originalNewBody: null,
+
                 commentEditMode: false,
                 gifMode: false,
                 favouriteMode: false,
                 tagMode: false,
-                hasTag: false
+                hasTag: false,
             }
+        },
+
+        created() {
+            this.orginalCommentBody = this.post.comments.data[0].body
+            this.originalTaggedUserName = this.post.comments.data[0].taggedUserName
+            this.originalTaggedUserID = this.post.comments.data[0].taggedUserID
+            this.originalNewBody = this.post.comments.data[0].newBody
         },
 
         methods: {
             dispatchEditComment(comment_id, comment_index, comment_body, post_id, post_index) {
                 this.$store.dispatch('updateComment', {comment_id, comment_index, comment_body, post_id, post_index})
+
+                if(! this.comment.body.includes('@')) {
+                    this.comment.tag.taggedUserName = null
+                    this.comment.tag.taggedUserID = null
+                    this.comment.tag.newBody = null
+                }
+                this.orginalCommentBody = this.comment.body
             },
 
             dispatchDeleteComment(comment_id, comment_index, post_id, post_index) {
                 this.$store.dispatch('deleteComment', {comment_id, comment_index, post_id, post_index})
+                this.orginalCommentBody = this.post.comments.data[0].body
             },
 
             dispatchFavouriteComment(comment_id, comment_index, post_id, post_index, type) {
@@ -134,9 +153,32 @@
                 this.comment.body = this.comment.body.replace('@', `@${user.name} `)
                 this.comment.tag.taggedUserName = user.name
                 this.comment.tag.taggedUserID = user.id
-                this.comment.tag.newBody = this.comment.body.split(user.name);
+                this.comment.tag.newBody = this.comment.body.split(user.name)
                 this.tagMode = false
                 this.hasTag = true
+            },
+
+            cancelEditComment() {
+                this.commentEditMode = false
+                this.comment.body = this.orginalCommentBody
+                if(this.comment.tag.taggedUserName != null) {
+                    this.comment.tag.taggedUserName = this.originalTaggedUserName
+                    this.comment.tag.taggedUserID = this.originalTaggedUserID
+                    this.comment.tag.newBody = this.originalNewBody
+                } else {
+                    this.comment.tag.taggedUserName = null
+                    this.comment.tag.taggedUserID = null
+                    this.comment.tag.newBody = null
+                }
+                this.hasTag = false
+            },
+
+            changeEditMode() {
+                this.commentEditMode = ! this.commentEditMode
+                this.orginalCommentBody = this.comment.body
+                this.originalTaggedUserName = this.comment.tag.taggedUserName
+                this.originalTaggedUserID = this.comment.tag.taggedUserID
+                this.originalNewBody = this.comment.tag.newBody
             }
         }
     }
