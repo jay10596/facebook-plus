@@ -56,6 +56,7 @@
                         this.$store.dispatch('fetchAuthUser')
                         this.$store.dispatch('fetchUser', this.$route.params.userId)
                         this.$store.dispatch('fetchUserPosts', this.$route.params.userId)
+                        this.$store.dispatch('fetchAllAvatars', this.$route.params.userId)
                     }
                 };
             },

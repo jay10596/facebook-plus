@@ -58,7 +58,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Post::class, 'likes', 'user_id', 'post_id');
     }
 
-    public function images()
+    public function avatars()
     {
         return $this->hasMany(Avatar::class);
     }

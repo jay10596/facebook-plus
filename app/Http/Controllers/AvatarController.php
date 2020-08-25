@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Avatar;
 use App\Http\Resources\Avatar as AvatarResource;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
@@ -27,7 +26,7 @@ class AvatarController extends Controller
             ->save(storage_path('app/public/uploadedAvatars/' . $data['avatar']->hashName()));
 
         //Save the image in the database.
-        $userAvatar = auth()->user()->images()->create([
+        $userAvatar = auth()->user()->avatars()->create([
             'path' => $avatar,
             'width' => $data['width'],
             'height' => $data['height'],

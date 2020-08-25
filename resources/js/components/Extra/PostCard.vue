@@ -1,5 +1,5 @@
 <template>
-    <div class="w-5/6 bg-white rounded mt-6 shadow">
+    <div class="bg-white rounded mt-4 shadow">
         <div class="p-4">
             <div class="flex justify-between items-center">
                 <img class="w-8 h-8 object-cover rounded-full" :src="'/storage/' + post.posted_by.profile_image.path" alt="Profile Image">

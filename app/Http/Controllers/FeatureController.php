@@ -5,12 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Post as PostResource;
 use App\Notifications\BirthdayNotification;
 use App\Notifications\TagNotification;
+use App\Notifications\WishNotification;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
 
+use Auth;
 use App\User;
 use App\Comment;
-use Auth;
+use App\Avatar;
 
 
 class FeatureController extends Controller
@@ -48,6 +50,7 @@ class FeatureController extends Controller
         ];
     }
 
+    //Also considered as writing on other user's wall
     public function wishBirthday(Request $request)
     {
         $post = Auth::user()->posts()->create([
@@ -55,6 +58,10 @@ class FeatureController extends Controller
             'friend_id' => $request->friend_id,
             'user_id' => Auth::user()->id
         ]);
+
+        //Send notification
+        $friend = User::find($request->friend_id);
+        $friend->notify(new WishNotification($post));
 
         return (new PostResource($post))->response()->setStatusCode(201);
     }
@@ -69,5 +76,14 @@ class FeatureController extends Controller
             $tagged_comment = Comment::find($tagged_comment_id);
             $tagged_user->notify(new TagNotification($tagged_comment));
         }
+    }
+
+    public function getAllAvatars(Request $request)
+    {
+        $user_id = $request->user_id;
+
+        $avatars = Avatar::where('user_id', $user_id)->get();
+
+        return $avatars;
     }
 }

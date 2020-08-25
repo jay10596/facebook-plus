@@ -47,6 +47,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/filter-birthdays', 'FeatureController@filterBirthdays');
     Route::post('/wish-birthday', 'FeatureController@wishBirthday');
     Route::post('/notify-tagged-user', 'FeatureController@notifyTaggedUser');
+    Route::post('/get-all-avatars', 'FeatureController@getAllAvatars');
+
 
     //NOTIFICATIONS
     Route::post('/notifications', 'NotificationController@index');

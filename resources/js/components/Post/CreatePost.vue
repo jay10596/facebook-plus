@@ -1,6 +1,6 @@
 <template>
-    <div class="w-5/6 p-4 bg-white shadow rounded">
-        <div class="flex justify-between items-center">
+    <div class="w-5/6 py-1 px-4 bg-white shadow rounded">
+        <div class="flex justify-between items-center py-3 border-b-2 border-gray-400">
             <img class="w-8 h-8 object-cover rounded-full" :src="'/storage/' + authUser.profile_image.path" alt="Profile Image">
 
             <input v-if="! editMode" v-model="body" type="text" class="flex-auto mx-4 h-8 pl-4 rounded-full bg-gray-200 focus:outline-none focus:shadow-outline" placeholder="Add a post">
@@ -27,9 +27,15 @@
                 </button>
             </div>
 
-            <button ref="postImage" class="dz-clickable mx-2 w-8 h-8 rounded-full text-xl bg-gray-200 focus:outline-none">
+            <button v-if="type != 'profile'" ref="postImage" class="dz-clickable mx-2 w-8 h-8 rounded-full text-xl bg-gray-200 focus:outline-none">
                 <p class="dz-clickable"><i class="fas fa-image"></i></p>
             </button>
+        </div>
+
+        <div class="mx-4 my-4 flex justify-between items-center text-sm text-gray-700 font-medium">
+            <p><i class="fas fa-photo-video text-green-500 mr-1"></i> Photo/Video</p>
+            <p><i class="fas fa-user-plus text-blue-500 mr-1"></i> Tag Friend</p>
+            <p><i class="fab fa-font-awesome-flag text-yellow-500 mr-1"></i> Life Events</p>
         </div>
 
         <div v-if="editMode && post.pictures.picture_count > 0" class="flex">
@@ -38,7 +44,7 @@
             </div>
         </div>
 
-        <div class="dropzone-previews flex">
+        <div v-if="type != 'profile'" class="dropzone-previews flex">
             <div id="dz-template" class="hidden">
                 <div class="dz-preview dz-file-preview mt-4">
                     <div class="dz-details mr-1">
@@ -64,6 +70,8 @@
     export default {
         name: "CreatePost",
 
+        props: ['type', 'friend_id'],
+
         data() {
             return {
                 editMode: false,
@@ -74,7 +82,7 @@
         },
 
         mounted() {
-            this.dropzone = new Dropzone(this.$refs.postImage, this.settings);
+            this.type != 'profile'? this.dropzone = new Dropzone(this.$refs.postImage, this.settings) : null
         },
 
         computed: {
@@ -93,42 +101,44 @@
             },
 
             settings() {
-                return {
-                    paramName: 'picture', //field name is image
-                    url: '/api/upload-pictures',
-                    acceptedFiles: 'image/*',
-                    clickable: '.dz-clickable', //<i> will not work as it is not a button. To make sure all the inner elements of button are clickable.
-                    autoProcessQueue: false, //When the image is uploaded, it sends it right away which will give the error becasue we do not have the body in params.
-                    previewsContainer: '.dropzone-previews',
-                    previewTemplate: document.querySelector('#dz-template').innerHTML,
-                    maxFiles: 5,
-                    parallelUploads: 5,
-                    uploadMultiple:true,
-                    params: { //Cannot pass body here because settings() load when the component is mounted. Use sending.
-                        'width': 750,
-                        'height': 750,
-                    },
-                    headers: {
-                        //'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content, (For api, when token is not needed)
+                if(this.type != 'profile') {
+                    return {
+                        paramName: 'picture', //field name is image
+                        url: '/api/upload-pictures',
+                        acceptedFiles: 'image/*',
+                        clickable: '.dz-clickable', //<i> will not work as it is not a button. To make sure all the inner elements of button are clickable.
+                        autoProcessQueue: false, //When the image is uploaded, it sends it right away which will give the error becasue we do not have the body in params.
+                        previewsContainer: '.dropzone-previews',
+                        previewTemplate: document.querySelector('#dz-template').innerHTML,
+                        maxFiles: 5,
+                        parallelUploads: 5,
+                        uploadMultiple:true,
+                        params: { //Cannot pass body here because settings() load when the component is mounted. Use sending.
+                            'width': 750,
+                            'height': 750,
+                        },
+                        headers: {
+                            //'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content, (For api, when token is not needed)
 
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    },
-                    sending: (file, xhr, postForm) => {
-                        postForm.append('body', this.post.body || this.$store.getters.body)
-                        postForm.append('post_id', this.post.id)
-                    },
-                    success: (e, res) => {
-                        this.dropzone.removeAllFiles()
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`
+                        },
+                        sending: (file, xhr, postForm) => {
+                            postForm.append('body', this.post.body || this.$store.getters.body)
+                            postForm.append('post_id', this.post.id)
+                        },
+                        success: (e, res) => {
+                            this.dropzone.removeAllFiles()
 
-                        this.$store.commit('setPostBody', '')
+                            this.$store.commit('setPostBody', '')
 
-                        //this.$store.commit('pushPost', res) For multiple images post, it will commit the response multiple times.
-                        this.$store.dispatch('fetchAllPosts')
-                    },
-                    maxfilesexceeded: file => {
-                        this.dropzone.removeAllFiles()
+                            //this.$store.commit('pushPost', res) For multiple images post, it will commit the response multiple times.
+                            this.$store.dispatch('fetchAllPosts')
+                        },
+                        maxfilesexceeded: file => {
+                            this.dropzone.removeAllFiles()
 
-                        this.dropzone.addFile(file)
+                            this.dropzone.addFile(file)
+                        }
                     }
                 }
             },
@@ -144,8 +154,10 @@
 
         methods: {
             dispatchCreatePost() {
-                if (this.dropzone.getAcceptedFiles().length) {
+                if (this.type != 'profile' && this.dropzone.getAcceptedFiles().length) {
                     this.dropzone.processQueue()
+                } else if (this.type == 'profile' && this.friend_id != this.authUser.id) {
+                    this.$store.dispatch('wishBirthday', {body: this.body, friend_id: this.friend_id})
                 } else {
                     this.$store.dispatch('createPost')
                 }
@@ -154,7 +166,7 @@
             dispatchUpdatePost(post) {
                 this.editMode = false
 
-                if (this.dropzone.getAcceptedFiles().length) {
+                if (this.type != 'profile' && this.dropzone.getAcceptedFiles().length) {
                     this.dropzone.processQueue()
                 } else {
                     this.$store.dispatch('updatePost', post)

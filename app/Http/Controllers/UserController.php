@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PostCollection;
+use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
 
@@ -25,7 +26,7 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        return [new UserResource($user), new PostCollection($user->posts()->latest()->get())];
+        return [new UserResource($user), new PostCollection(Post::where('user_id', $user->id)->orWhere('friend_id', $user->id)->latest()->get())];
     }
 
     public function update(Request $request, User $user)

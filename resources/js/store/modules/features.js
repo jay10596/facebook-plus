@@ -1,6 +1,9 @@
+import Posts from './posts'
+
 const state = {
     birthdays: '',
     birthdayErrors: '',
+    avatars: ''
 };
 
 const getters = {
@@ -10,7 +13,11 @@ const getters = {
 
     birthdayErrors: state => {
         return state.birthdayErrors;
-    }
+    },
+
+    avatars: state => {
+        return state.avatars;
+    },
 };
 
 const actions = {
@@ -22,9 +29,25 @@ const actions = {
 
     wishBirthday({commit, state}, data) {
         axios.post('/api/wish-birthday', {body: data.body, friend_id: data.friend_id})
-            .then(res => console.log(res.data))
+            .then(res => {
+                commit('pushPost', res.data)
+                commit('setPostBody', '')
+            })
             .catch(err => commit('setBirthdayErrors', err))
-    }
+    },
+
+    fetchAllAvatars({commit, state}, user_id) {
+        axios.post('/api/get-all-avatars', {user_id: user_id})
+            .then(res => commit('setAvatars', res.data))
+    },
+
+    setPostBody(state, body) {
+        Posts.state.body = body
+    },
+
+    pushPost(state, newPost) {
+        Posts.state.posts.unshift(newPost.data)
+    },
 };
 
 const mutations = {
@@ -34,6 +57,10 @@ const mutations = {
 
     setBirthdayErrors(state, err) {
         state.birthdayErrors = err
+    },
+
+    setAvatars(state, avatars) {
+        state.avatars = avatars
     }
 };
 

@@ -8152,6 +8152,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           _this.$store.dispatch('fetchUser', _this.$route.params.userId);
 
           _this.$store.dispatch('fetchUserPosts', _this.$route.params.userId);
+
+          _this.$store.dispatch('fetchAllAvatars', _this.$route.params.userId);
         }
       };
     },
@@ -8942,11 +8944,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "CreatePost",
+  props: ['type', 'friend_id'],
   data: function data() {
     return {
       editMode: false,
@@ -8956,7 +8965,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   mounted: function mounted() {
-    this.dropzone = new dropzone__WEBPACK_IMPORTED_MODULE_2___default.a(this.$refs.postImage, this.settings);
+    this.type != 'profile' ? this.dropzone = new dropzone__WEBPACK_IMPORTED_MODULE_2___default.a(this.$refs.postImage, this.settings) : null;
   },
   computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])({
     authUser: 'authUser'
@@ -8973,47 +8982,49 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     settings: function settings() {
       var _this = this;
 
-      return {
-        paramName: 'picture',
-        //field name is image
-        url: '/api/upload-pictures',
-        acceptedFiles: 'image/*',
-        clickable: '.dz-clickable',
-        //<i> will not work as it is not a button. To make sure all the inner elements of button are clickable.
-        autoProcessQueue: false,
-        //When the image is uploaded, it sends it right away which will give the error becasue we do not have the body in params.
-        previewsContainer: '.dropzone-previews',
-        previewTemplate: document.querySelector('#dz-template').innerHTML,
-        maxFiles: 5,
-        parallelUploads: 5,
-        uploadMultiple: true,
-        params: {
-          //Cannot pass body here because settings() load when the component is mounted. Use sending.
-          'width': 750,
-          'height': 750
-        },
-        headers: {
-          //'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content, (For api, when token is not needed)
-          'Authorization': "Bearer ".concat(localStorage.getItem('token'))
-        },
-        sending: function sending(file, xhr, postForm) {
-          postForm.append('body', _this.post.body || _this.$store.getters.body);
-          postForm.append('post_id', _this.post.id);
-        },
-        success: function success(e, res) {
-          _this.dropzone.removeAllFiles();
+      if (this.type != 'profile') {
+        return {
+          paramName: 'picture',
+          //field name is image
+          url: '/api/upload-pictures',
+          acceptedFiles: 'image/*',
+          clickable: '.dz-clickable',
+          //<i> will not work as it is not a button. To make sure all the inner elements of button are clickable.
+          autoProcessQueue: false,
+          //When the image is uploaded, it sends it right away which will give the error becasue we do not have the body in params.
+          previewsContainer: '.dropzone-previews',
+          previewTemplate: document.querySelector('#dz-template').innerHTML,
+          maxFiles: 5,
+          parallelUploads: 5,
+          uploadMultiple: true,
+          params: {
+            //Cannot pass body here because settings() load when the component is mounted. Use sending.
+            'width': 750,
+            'height': 750
+          },
+          headers: {
+            //'X-CSRF-TOKEN': document.head.querySelector('meta[name=csrf-token]').content, (For api, when token is not needed)
+            'Authorization': "Bearer ".concat(localStorage.getItem('token'))
+          },
+          sending: function sending(file, xhr, postForm) {
+            postForm.append('body', _this.post.body || _this.$store.getters.body);
+            postForm.append('post_id', _this.post.id);
+          },
+          success: function success(e, res) {
+            _this.dropzone.removeAllFiles();
 
-          _this.$store.commit('setPostBody', ''); //this.$store.commit('pushPost', res) For multiple images post, it will commit the response multiple times.
+            _this.$store.commit('setPostBody', ''); //this.$store.commit('pushPost', res) For multiple images post, it will commit the response multiple times.
 
 
-          _this.$store.dispatch('fetchAllPosts');
-        },
-        maxfilesexceeded: function maxfilesexceeded(file) {
-          _this.dropzone.removeAllFiles();
+            _this.$store.dispatch('fetchAllPosts');
+          },
+          maxfilesexceeded: function maxfilesexceeded(file) {
+            _this.dropzone.removeAllFiles();
 
-          _this.dropzone.addFile(file);
-        }
-      };
+            _this.dropzone.addFile(file);
+          }
+        };
+      }
     }
   }),
   created: function created() {
@@ -9027,8 +9038,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   methods: {
     dispatchCreatePost: function dispatchCreatePost() {
-      if (this.dropzone.getAcceptedFiles().length) {
+      if (this.type != 'profile' && this.dropzone.getAcceptedFiles().length) {
         this.dropzone.processQueue();
+      } else if (this.type == 'profile' && this.friend_id != this.authUser.id) {
+        this.$store.dispatch('wishBirthday', {
+          body: this.body,
+          friend_id: this.friend_id
+        });
       } else {
         this.$store.dispatch('createPost');
       }
@@ -9036,7 +9052,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     dispatchUpdatePost: function dispatchUpdatePost(post) {
       this.editMode = false;
 
-      if (this.dropzone.getAcceptedFiles().length) {
+      if (this.type != 'profile' && this.dropzone.getAcceptedFiles().length) {
         this.dropzone.processQueue();
       } else {
         this.$store.dispatch('updatePost', post);
@@ -9307,6 +9323,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Extra_PostCard__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Extra/PostCard */ "./resources/js/components/Extra/PostCard.vue");
 /* harmony import */ var _Extra_UploadAvatar__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Extra/UploadAvatar */ "./resources/js/components/Extra/UploadAvatar.vue");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _Post_CreatePost__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Post/CreatePost */ "./resources/js/components/Post/CreatePost.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -9349,25 +9366,94 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ShowUser",
   components: {
+    CreatePost: _Post_CreatePost__WEBPACK_IMPORTED_MODULE_3__["default"],
     PostCard: _Extra_PostCard__WEBPACK_IMPORTED_MODULE_0__["default"],
     UploadAvatar: _Extra_UploadAvatar__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])({
     user: 'user',
+    authUser: 'authUser',
+    avatars: 'avatars',
     posts: 'posts',
     friendButton: 'friendButton',
     userErrors: 'userErrors',
     status: 'status'
   })),
+  data: function data() {
+    return {
+      seeAllMode: false
+    };
+  },
   created: function created() {
     this.$store.dispatch('fetchUser', this.$route.params.userId);
     this.$store.dispatch('fetchUserPosts', this.$route.params.userId);
+    this.$store.dispatch('fetchAllAvatars', this.$route.params.userId);
   },
   methods: {
     sendFriendRequest: function sendFriendRequest() {
@@ -34026,7 +34112,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-5/6 bg-white rounded mt-6 shadow" }, [
+  return _c("div", { staticClass: "bg-white rounded mt-4 shadow" }, [
     _c("div", { staticClass: "p-4" }, [
       _c("div", { staticClass: "flex justify-between items-center" }, [
         _c("img", {
@@ -35676,128 +35762,139 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "w-5/6 p-4 bg-white shadow rounded" }, [
-    _c("div", { staticClass: "flex justify-between items-center" }, [
-      _c("img", {
-        staticClass: "w-8 h-8 object-cover rounded-full",
-        attrs: {
-          src: "/storage/" + _vm.authUser.profile_image.path,
-          alt: "Profile Image"
-        }
-      }),
-      _vm._v(" "),
-      !_vm.editMode
-        ? _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.body,
-                expression: "body"
-              }
-            ],
-            staticClass:
-              "flex-auto mx-4 h-8 pl-4 rounded-full bg-gray-200 focus:outline-none focus:shadow-outline",
-            attrs: { type: "text", placeholder: "Add a post" },
-            domProps: { value: _vm.body },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.body = $event.target.value
-              }
-            }
-          })
-        : _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.post.body,
-                expression: "post.body"
-              }
-            ],
-            staticClass:
-              "flex-auto mx-4 h-8 pl-4 rounded-full bg-gray-200 focus:outline-none focus:shadow-outline",
-            attrs: { type: "text", placeholder: "Add a post" },
-            domProps: { value: _vm.post.body },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.post, "body", $event.target.value)
-              }
-            }
-          }),
-      _vm._v(" "),
-      !_vm.editMode
-        ? _c(
-            "div",
-            [
-              _c("transition", { attrs: { name: "fade" } }, [
-                _vm.body
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "px-2 text-xl",
-                        on: { click: _vm.dispatchCreatePost }
-                      },
-                      [_c("i", { staticClass: "fas fa-share" })]
-                    )
-                  : _vm._e()
-              ])
-            ],
-            1
-          )
-        : _c(
-            "div",
-            [
-              _c("transition", { attrs: { name: "fade" } }, [
-                _vm.post.body
-                  ? _c(
-                      "button",
-                      {
-                        staticClass: "px-2 text-xl",
-                        on: {
-                          click: function($event) {
-                            _vm.dispatchUpdatePost(_vm.post),
-                              (_vm.post.body = "")
-                          }
-                        }
-                      },
-                      [_c("i", { staticClass: "fas fa-edit" })]
-                    )
-                  : _vm._e()
-              ]),
-              _vm._v(" "),
-              _c(
-                "button",
+  return _c("div", { staticClass: "w-5/6 py-1 px-4 bg-white shadow rounded" }, [
+    _c(
+      "div",
+      {
+        staticClass:
+          "flex justify-between items-center py-3 border-b-2 border-gray-400"
+      },
+      [
+        _c("img", {
+          staticClass: "w-8 h-8 object-cover rounded-full",
+          attrs: {
+            src: "/storage/" + _vm.authUser.profile_image.path,
+            alt: "Profile Image"
+          }
+        }),
+        _vm._v(" "),
+        !_vm.editMode
+          ? _c("input", {
+              directives: [
                 {
-                  staticClass: "w-8 h-8 rounded-full text-xl bg-gray-200",
-                  on: {
-                    click: function($event) {
-                      return _vm.commitCancelEdit(_vm.post)
-                    }
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.body,
+                  expression: "body"
+                }
+              ],
+              staticClass:
+                "flex-auto mx-4 h-8 pl-4 rounded-full bg-gray-200 focus:outline-none focus:shadow-outline",
+              attrs: { type: "text", placeholder: "Add a post" },
+              domProps: { value: _vm.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
                   }
-                },
-                [_c("i", { staticClass: "far fa-window-close" })]
-              )
-            ],
-            1
-          ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          ref: "postImage",
-          staticClass:
-            "dz-clickable mx-2 w-8 h-8 rounded-full text-xl bg-gray-200 focus:outline-none"
-        },
-        [_vm._m(0)]
-      )
-    ]),
+                  _vm.body = $event.target.value
+                }
+              }
+            })
+          : _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.post.body,
+                  expression: "post.body"
+                }
+              ],
+              staticClass:
+                "flex-auto mx-4 h-8 pl-4 rounded-full bg-gray-200 focus:outline-none focus:shadow-outline",
+              attrs: { type: "text", placeholder: "Add a post" },
+              domProps: { value: _vm.post.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.post, "body", $event.target.value)
+                }
+              }
+            }),
+        _vm._v(" "),
+        !_vm.editMode
+          ? _c(
+              "div",
+              [
+                _c("transition", { attrs: { name: "fade" } }, [
+                  _vm.body
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "px-2 text-xl",
+                          on: { click: _vm.dispatchCreatePost }
+                        },
+                        [_c("i", { staticClass: "fas fa-share" })]
+                      )
+                    : _vm._e()
+                ])
+              ],
+              1
+            )
+          : _c(
+              "div",
+              [
+                _c("transition", { attrs: { name: "fade" } }, [
+                  _vm.post.body
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "px-2 text-xl",
+                          on: {
+                            click: function($event) {
+                              _vm.dispatchUpdatePost(_vm.post),
+                                (_vm.post.body = "")
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fas fa-edit" })]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "w-8 h-8 rounded-full text-xl bg-gray-200",
+                    on: {
+                      click: function($event) {
+                        return _vm.commitCancelEdit(_vm.post)
+                      }
+                    }
+                  },
+                  [_c("i", { staticClass: "far fa-window-close" })]
+                )
+              ],
+              1
+            ),
+        _vm._v(" "),
+        _vm.type != "profile"
+          ? _c(
+              "button",
+              {
+                ref: "postImage",
+                staticClass:
+                  "dz-clickable mx-2 w-8 h-8 rounded-full text-xl bg-gray-200 focus:outline-none"
+              },
+              [_vm._m(0)]
+            )
+          : _vm._e()
+      ]
+    ),
+    _vm._v(" "),
+    _vm._m(1),
     _vm._v(" "),
     _vm.editMode && _vm.post.pictures.picture_count > 0
       ? _c(
@@ -35814,7 +35911,9 @@ var render = function() {
         )
       : _vm._e(),
     _vm._v(" "),
-    _vm._m(1)
+    _vm.type != "profile"
+      ? _c("div", { staticClass: "dropzone-previews flex" }, [_vm._m(2)])
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -35830,34 +35929,62 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "dropzone-previews flex" }, [
-      _c("div", { staticClass: "hidden", attrs: { id: "dz-template" } }, [
-        _c("div", { staticClass: "dz-preview dz-file-preview mt-4" }, [
-          _c("div", { staticClass: "dz-details mr-1" }, [
-            _c("img", {
-              staticClass: "w-32 h-32",
-              attrs: { "data-dz-thumbnail": "", alt: "" }
-            }),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                staticClass: "mt-2 ml-6 text-sm focus:outline-none",
-                attrs: { "data-dz-remove": "" }
-              },
-              [
-                _c("i", { staticClass: "fas fa-minus-circle text-red-500" }),
-                _vm._v(" Remove")
-              ]
-            )
-          ]),
+    return _c(
+      "div",
+      {
+        staticClass:
+          "mx-4 my-4 flex justify-between items-center text-sm text-gray-700 font-medium"
+      },
+      [
+        _c("p", [
+          _c("i", { staticClass: "fas fa-photo-video text-green-500 mr-1" }),
+          _vm._v(" Photo/Video")
+        ]),
+        _vm._v(" "),
+        _c("p", [
+          _c("i", { staticClass: "fas fa-user-plus text-blue-500 mr-1" }),
+          _vm._v(" Tag Friend")
+        ]),
+        _vm._v(" "),
+        _c("p", [
+          _c("i", {
+            staticClass: "fab fa-font-awesome-flag text-yellow-500 mr-1"
+          }),
+          _vm._v(" Life Events")
+        ])
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "hidden", attrs: { id: "dz-template" } }, [
+      _c("div", { staticClass: "dz-preview dz-file-preview mt-4" }, [
+        _c("div", { staticClass: "dz-details mr-1" }, [
+          _c("img", {
+            staticClass: "w-32 h-32",
+            attrs: { "data-dz-thumbnail": "", alt: "" }
+          }),
           _vm._v(" "),
-          _c("div", { staticClass: "dz-progress" }, [
-            _c("span", {
-              staticClass: "dz-upload",
-              attrs: { "data-dz-upload": "" }
-            })
-          ])
+          _c(
+            "button",
+            {
+              staticClass: "mt-2 ml-6 text-sm focus:outline-none",
+              attrs: { "data-dz-remove": "" }
+            },
+            [
+              _c("i", { staticClass: "fas fa-minus-circle text-red-500" }),
+              _vm._v(" Remove")
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "dz-progress" }, [
+          _c("span", {
+            staticClass: "dz-upload",
+            attrs: { "data-dz-upload": "" }
+          })
         ])
       ])
     ])
@@ -35893,7 +36020,11 @@ var render = function() {
         : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.posts, function(post, index) {
-        return _c("PostCard", { key: index, attrs: { post: post } })
+        return _c("PostCard", {
+          key: index,
+          staticClass: "w-5/6",
+          attrs: { post: post }
+        })
       })
     ],
     2
@@ -36560,121 +36691,423 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _vm.user
     ? _c("div", [
-        _c("div", { staticClass: "relative" }, [
-          _c(
-            "div",
-            { staticClass: "w-100 h-64 overflow-hidden z-10" },
-            [
-              _c("UploadAvatar", {
-                attrs: {
-                  newAvatar: _vm.user.cover_image,
-                  avatarClass: "object-cover w-full",
-                  avatarAlt: "Cover Image",
-                  avatarWidth: "1500",
-                  avatarHeight: "500",
-                  avatarType: "cover"
-                }
-              })
-            ],
-            1
-          ),
+        _c("div", { staticClass: "bg-white" }, [
+          _c("div", { staticClass: "relative flex justify-center mx-32" }, [
+            _c(
+              "div",
+              { staticClass: "w-100 h-64 overflow-hidden z-10 rounded-lg" },
+              [
+                _c("UploadAvatar", {
+                  attrs: {
+                    newAvatar: _vm.user.cover_image,
+                    avatarClass: "object-cover w-full",
+                    avatarAlt: "Cover Image",
+                    avatarWidth: "1500",
+                    avatarHeight: "500",
+                    avatarType: "cover"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "absolute bottom-0 -mb-3 z-20" },
+              [
+                _c("UploadAvatar", {
+                  attrs: {
+                    newAvatar: _vm.user.profile_image,
+                    avatarClass:
+                      "w-32 h-32 object-cover rounded-full shadow-lg border-2 border-gray-200",
+                    avatarAlt: "Profile Image",
+                    avatarWidth: "750",
+                    avatarHeight: "750",
+                    avatarType: "profile"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "absolute flex items-center bottom-0 right-0 mb-4 z-20 mx-4"
+              },
+              [
+                _vm.friendButton && _vm.friendButton !== "Accept"
+                  ? _c(
+                      "button",
+                      {
+                        staticClass:
+                          "py-1 px-3 bg-gray-400 text-sm text-gray-900 font-semibold rounded",
+                        on: { click: _vm.sendFriendRequest }
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-user-plus" }),
+                        _vm._v(
+                          " " + _vm._s(_vm.friendButton) + "\n                "
+                        )
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.friendButton && _vm.friendButton === "Accept"
+                  ? _c(
+                      "button",
+                      {
+                        staticClass:
+                          "py-1 px-3 bg-blue-500 text-sm text-gray-900 font-semibold mr-2 rounded",
+                        on: { click: _vm.acceptFriendRequest }
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-user-check" }),
+                        _vm._v(" Accept\n                ")
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.friendButton && _vm.friendButton === "Accept"
+                  ? _c(
+                      "button",
+                      {
+                        staticClass:
+                          "py-1 px-3 bg-gray-400 text-sm text-gray-900 font-semibold mr-2 rounded",
+                        on: { click: _vm.deleteFriendRequest }
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-user-times" }),
+                        _vm._v(" Delete\n                ")
+                      ]
+                    )
+                  : _vm._e()
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mx-36 py-4 border-b-2 border-gray-400" }, [
+            _c(
+              "p",
+              {
+                staticClass: "mb-4 text-2xl text-gray-800 font-bold text-center"
+              },
+              [_vm._v(_vm._s(_vm.user.name))]
+            ),
+            _vm._v(" "),
+            _c(
+              "p",
+              {
+                staticClass: "text-sm text-gray-600 font-semibold text-center"
+              },
+              [_vm._v(_vm._s(_vm.user.about))]
+            )
+          ]),
           _vm._v(" "),
           _c(
             "div",
-            {
-              staticClass:
-                "absolute flex items-center bottom-0 left-0 -mb-8 z-20 mx-4"
-            },
+            { staticClass: "mx-36 flex justify-between items-center" },
             [
-              _c("UploadAvatar", {
-                attrs: {
-                  newAvatar: _vm.user.profile_image,
-                  avatarClass:
-                    "w-32 h-32 object-cover rounded-full shadow-lg border-4 border-gray-200",
-                  avatarAlt: "Profile Image",
-                  avatarWidth: "750",
-                  avatarHeight: "750",
-                  avatarType: "profile"
-                }
-              }),
+              _vm._m(0),
               _vm._v(" "),
-              _c(
-                "p",
-                { staticClass: "text-2xl text-gray-100 ml-3 shadow-2xl" },
-                [_vm._v(_vm._s(_vm.user.name))]
-              )
-            ],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass:
-                "absolute flex items-center bottom-0 right-0 mb-4 z-20 mx-4"
-            },
-            [
-              _vm.friendButton && _vm.friendButton !== "Accept"
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "py-1 px-3 bg-gray-400 rounded",
-                      on: { click: _vm.sendFriendRequest }
-                    },
-                    [
-                      _c("i", { staticClass: "fas fa-user-plus" }),
-                      _vm._v(" " + _vm._s(_vm.friendButton) + "\n            ")
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.friendButton && _vm.friendButton === "Accept"
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "py-1 px-3 bg-blue-500 mr-2 rounded",
-                      on: { click: _vm.acceptFriendRequest }
-                    },
-                    [
-                      _c("i", { staticClass: "fas fa-user-check" }),
-                      _vm._v(" Accept\n            ")
-                    ]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.friendButton && _vm.friendButton === "Accept"
-                ? _c(
-                    "button",
-                    {
-                      staticClass: "py-1 px-3 bg-gray-400 mr-2 rounded",
-                      on: { click: _vm.deleteFriendRequest }
-                    },
-                    [
-                      _c("i", { staticClass: "fas fa-user-times" }),
-                      _vm._v(" Delete\n            ")
-                    ]
-                  )
-                : _vm._e()
+              _c("div", { staticClass: "flex" }, [
+                _vm.user.id == _vm.authUser.id
+                  ? _c(
+                      "button",
+                      {
+                        staticClass:
+                          "text-sm text-gray-700 font-bold my-2 mx-1 py-1 px-4 bg-gray-200 rounded-lg"
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-edit mr-2" }),
+                        _vm._v("Edit Profile")
+                      ]
+                    )
+                  : _c(
+                      "button",
+                      {
+                        staticClass:
+                          "text-sm text-gray-800 font-bold my-2 mx-1 py-1 px-4 bg-gray-200 rounded-lg shadow"
+                      },
+                      [
+                        _c("i", { staticClass: "fas fa-user-friends mr-2" }),
+                        _vm._v("Friends "),
+                        _c("i", { staticClass: "fas fa-caret-down" })
+                      ]
+                    ),
+                _vm._v(" "),
+                _vm._m(1),
+                _vm._v(" "),
+                _vm._m(2)
+              ])
             ]
           )
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "flex flex-col items-center py-4" },
-          [
-            _vm.status.posts == "loading" && _vm.posts.length < 1
-              ? _c("p", [_vm._v("Loading Posts...")])
-              : _vm._l(_vm.posts, function(post, index) {
-                  return _c("PostCard", { key: index, attrs: { post: post } })
-                })
-          ],
-          2
-        )
+        _c("div", { staticClass: "flex mx-36" }, [
+          _c(
+            "div",
+            { staticClass: "w-5/12 flex flex-col items-center my-4 mr-2" },
+            [
+              _c(
+                "div",
+                { staticClass: "w-full rounded bg-white p-4 my-4 shadow" },
+                [
+                  _c("p", { staticClass: "text-md font-bold text-gray-900" }, [
+                    _vm._v("About")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "my-2 text-sm font-semibold text-gray-600" },
+                    [
+                      _c("i", { staticClass: "fas fa-map-marker-alt mr-2" }),
+                      _vm._v("Lives in "),
+                      _c("span", { staticClass: "text-gray-800 font-bold" }, [
+                        _vm._v(_vm._s(_vm.user.city))
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "my-2 text-sm font-semibold text-gray-600" },
+                    [
+                      _c("i", { staticClass: "fas fa-birthday-cake mr-2" }),
+                      _vm._v("Birthday on "),
+                      _c("span", { staticClass: "text-gray-800 font-bold" }, [
+                        _vm._v(
+                          _vm._s(_vm.user.birthday.day) +
+                            "/" +
+                            _vm._s(_vm.user.birthday.month) +
+                            "/" +
+                            _vm._s(_vm.user.birthday.year)
+                        )
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "p",
+                    { staticClass: "my-2 text-sm font-semibold text-gray-600" },
+                    [
+                      _c("i", { staticClass: "fas fa-heart mr-2" }),
+                      _vm._v("Interested in "),
+                      _c("span", { staticClass: "text-gray-800 font-bold" }, [
+                        _vm._v(_vm._s(_vm.user.interest))
+                      ])
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _vm.user.gender == "male"
+                    ? _c(
+                        "p",
+                        {
+                          staticClass:
+                            "my-2 text-sm font-semibold text-gray-600"
+                        },
+                        [
+                          _c("i", { staticClass: "fas fa-mars mr-2" }),
+                          _vm._v("Male")
+                        ]
+                      )
+                    : _c(
+                        "p",
+                        {
+                          staticClass:
+                            "my-2 text-sm font-semibold text-gray-600"
+                        },
+                        [
+                          _c("i", { staticClass: "fas fa-venus mr-2" }),
+                          _vm._v("Female")
+                        ]
+                      ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "flex justify-center my-2" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass:
+                          "w-full p-1 text-sm font-bold text-gray-800 bg-gray-200 text-center shadow"
+                      },
+                      [_vm._v("See More About " + _vm._s(_vm.user.name))]
+                    )
+                  ])
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "w-full rounded bg-white p-4 shadow" }, [
+                _c("div", { staticClass: "flex justify-between" }, [
+                  _c("p", { staticClass: "text-md font-bold text-gray-900" }, [
+                    _vm._v("Photos")
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "text-md font-medium text-blue-600",
+                      on: {
+                        click: function($event) {
+                          _vm.seeAllMode = !_vm.seeAllMode
+                        }
+                      }
+                    },
+                    [_vm._v("See All")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "flex flex-wrap justify-between" },
+                  [
+                    _vm._l(_vm.avatars.slice(0, 4), function(avatar) {
+                      return !_vm.seeAllMode
+                        ? _c("img", {
+                            key: avatar.id,
+                            staticClass: "w-35 h-35 my-1 object-cover",
+                            attrs: {
+                              src: "/storage/" + avatar.path,
+                              alt: "Profile Image"
+                            }
+                          })
+                        : _vm._e()
+                    }),
+                    _vm._v(" "),
+                    _vm._l(_vm.avatars, function(avatar) {
+                      return _vm.seeAllMode
+                        ? _c("img", {
+                            key: avatar.id,
+                            staticClass: "w-35 h-35 my-1 object-cover",
+                            attrs: {
+                              src: "/storage/" + avatar.path,
+                              alt: "Profile Image"
+                            }
+                          })
+                        : _vm._e()
+                    })
+                  ],
+                  2
+                ),
+                _vm._v(" "),
+                _c("div", { staticClass: "flex justify-center my-2" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass:
+                        "w-full p-1 text-sm font-bold text-gray-800 bg-gray-200 text-center shadow"
+                    },
+                    [_vm._v("See More About " + _vm._s(_vm.user.name))]
+                  )
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "w-7/12 flex flex-col items-center py-4 ml-2" },
+            [
+              _c("CreatePost", {
+                staticClass: "w-full mt-4",
+                attrs: { type: "profile", friend_id: _vm.user.id }
+              }),
+              _vm._v(" "),
+              _vm.status.posts == "loading" && _vm.posts.length < 1
+                ? _c("p", [_vm._v("Loading Posts...")])
+                : _vm._l(_vm.posts, function(post, index) {
+                    return _c("PostCard", {
+                      key: index,
+                      staticClass: "w-full",
+                      attrs: { post: post }
+                    })
+                  })
+            ],
+            2
+          )
+        ])
       ])
     : _vm._e()
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "flex items-center h-full" }, [
+      _c(
+        "button",
+        {
+          staticClass:
+            "text-sm text-blue-600 font-bold px-2 py-3 border-b-2 border-blue-600"
+        },
+        [_vm._v("Timeline")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "text-sm text-gray-700 font-bold px-2 py-3 border-b-2 border-white hover:border-blue-600"
+        },
+        [_vm._v("About")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "text-sm text-gray-700 font-bold px-2 py-3 border-b-2 border-white hover:border-blue-600"
+        },
+        [_vm._v("Albums")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "text-sm text-gray-700 font-bold px-2 py-3 border-b-2 border-white hover:border-blue-600"
+        },
+        [_vm._v("Friends")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass:
+            "text-sm text-gray-700 font-bold px-2 py-3 border-b-2 border-white hover:border-blue-600"
+        },
+        [_vm._v("More "), _c("i", { staticClass: "fas fa-caret-down" })]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass:
+          "text-sm text-gray-800 font-bold my-2 mx-1 py-1 px-4 bg-gray-200 rounded-lg shadow"
+      },
+      [_c("i", { staticClass: "fab fa-facebook-messenger" })]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass:
+          "text-sm text-gray-800 font-bold my-2 ml-1 py-1 px-4 bg-gray-200 rounded-lg shadow"
+      },
+      [_c("i", { staticClass: "fas fa-ellipsis-h" })]
+    )
+  }
+]
 render._withStripped = true
 
 
@@ -55896,9 +56329,12 @@ var mutations = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _posts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./posts */ "./resources/js/store/modules/posts.js");
+
 var state = {
   birthdays: '',
-  birthdayErrors: ''
+  birthdayErrors: '',
+  avatars: ''
 };
 var getters = {
   birthdays: function birthdays(state) {
@@ -55906,6 +56342,9 @@ var getters = {
   },
   birthdayErrors: function birthdayErrors(state) {
     return state.birthdayErrors;
+  },
+  avatars: function avatars(state) {
+    return state.avatars;
   }
 };
 var actions = {
@@ -55925,10 +56364,26 @@ var actions = {
       body: data.body,
       friend_id: data.friend_id
     }).then(function (res) {
-      return console.log(res.data);
+      commit('pushPost', res.data);
+      commit('setPostBody', '');
     })["catch"](function (err) {
       return commit('setBirthdayErrors', err);
     });
+  },
+  fetchAllAvatars: function fetchAllAvatars(_ref3, user_id) {
+    var commit = _ref3.commit,
+        state = _ref3.state;
+    axios.post('/api/get-all-avatars', {
+      user_id: user_id
+    }).then(function (res) {
+      return commit('setAvatars', res.data);
+    });
+  },
+  setPostBody: function setPostBody(state, body) {
+    _posts__WEBPACK_IMPORTED_MODULE_0__["default"].state.body = body;
+  },
+  pushPost: function pushPost(state, newPost) {
+    _posts__WEBPACK_IMPORTED_MODULE_0__["default"].state.posts.unshift(newPost.data);
   }
 };
 var mutations = {
@@ -55937,6 +56392,9 @@ var mutations = {
   },
   setBirthdayErrors: function setBirthdayErrors(state, err) {
     state.birthdayErrors = err;
+  },
+  setAvatars: function setAvatars(state, avatars) {
+    state.avatars = avatars;
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({
