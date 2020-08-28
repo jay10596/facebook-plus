@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\User as UserResource;
+use App\Notifications\LoginNotification;
 
 use Carbon\Carbon;
 use Laravel\Socialite\Facades\Socialite;
@@ -65,6 +66,9 @@ class AuthController extends Controller
         $user = auth()->user();
 
         $token =  $user->createToken('MyApp')->accessToken;
+
+        //Send Mail notification
+        $user->notify(new LoginNotification($user));
 
         return response()->json([
             'access_token' => $token,

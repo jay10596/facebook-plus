@@ -31803,15 +31803,7 @@ var render = function() {
       _c("div", { staticClass: "w-full max-w-xs" }, [
         _c(
           "form",
-          {
-            staticClass: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4",
-            on: {
-              submit: function($event) {
-                $event.preventDefault()
-                return _vm.dispatchLogin(_vm.loginForm)
-              }
-            }
-          },
+          { staticClass: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" },
           [
             _c("div", { staticClass: "mb-4" }, [
               _c(
@@ -31979,15 +31971,7 @@ var render = function() {
     _c("div", { staticClass: "w-full max-w-xs" }, [
       _c(
         "form",
-        {
-          staticClass: "bg-white shadow-md rounded px-8 pt-6 pb-8 my-4",
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.dispatchRegister(_vm.registerForm)
-            }
-          }
-        },
+        { staticClass: "bg-white shadow-md rounded px-8 pt-6 pb-8 my-4" },
         [
           _c("div", { staticClass: "mb-4" }, [
             _c(
